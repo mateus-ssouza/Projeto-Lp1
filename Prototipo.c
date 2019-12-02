@@ -3,6 +3,23 @@
 #include <string.h>
 #include <windows.h>
 
+typedef struct{
+    char nome[20];
+    char curso[40];
+    char email[40];
+    int matricula,rg;
+}CADASTRO;
+
+typedef struct elemento{
+    CADASTRO dados;
+    struct elemento *ant;
+    struct elemento *prox;
+}ELEM;
+
+typedef struct{
+    struct elemento *inicio;
+}LISTAD;
+
 void menu_final(){
     int i;
     system("cls");
@@ -123,23 +140,84 @@ void menu_incial(){
 
 }
 
+void mostrarCongressista(LISTAD *ld){  //Funcao de listagem dos congressistas cadastrados
 
-typedef struct{
-    char nome[20];
-    char curso[40];
-    char email[40];
-    int matricula,rg;
-}CADASTRO;
+    if(ld == NULL){
+    }
+    else{
+        if(ld->inicio==NULL){
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t SEM CONGRESSISTAS CADASTRADOS!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+        }
+        else{
+            ELEM* aux = ld->inicio;
+            printf("\n\n\t\t\t\t\t\t\t\tLISTA CONGRESSISTAS: \n");
+            while(aux != NULL){
+                printf("\n\n\t\t\t\t\t\t\t\t-----------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t CONGRESSISTA: %s\n",aux->dados.nome);
+                printf("\n\t\t\t\t\t\t\t\t IDENTIDADE (RG): %d\n",aux->dados.rg);
+                printf("\n\t\t\t\t\t\t\t\t EMAIL: %s\n",aux->dados.email);
+                printf("\n\t\t\t\t\t\t\t\t CURSO: %s\n",aux->dados.curso);
+                printf("\n\t\t\t\t\t\t\t\t MATRICULA: %d\n",aux->dados.matricula);
+                printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
+                aux = aux->prox;
+            }
+        }
+    }
+}
 
-typedef struct elemento{
-    CADASTRO dados;
-    struct elemento *ant;
-    struct elemento *prox;
-}ELEM;
+void mostrarPalestrante(LISTAD *ld){  //Funcao de listagem dos congressistas cadastrados
 
-typedef struct{
-    struct elemento *inicio;
-}LISTAD;
+    if(ld == NULL){
+    }
+    else{
+        if(ld->inicio==NULL){
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t SEM PALESTRANTES CADASTRADOS!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+        }
+        else{
+            ELEM* aux = ld->inicio;
+            printf("\n\n\t\t\t\t\t\t\t\tLISTA PALESTRANTES: \n");
+            while(aux != NULL){
+                printf("\n\n\t\t\t\t\t\t\t\t-----------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t PALESTRANTE: %s\n",aux->dados.nome);
+                printf("\n\t\t\t\t\t\t\t\t IDENTIDADE (RG): %d\n",aux->dados.rg);
+                printf("\n\t\t\t\t\t\t\t\t EMAIL: %s\n",aux->dados.email);
+                printf("\n\t\t\t\t\t\t\t\t MATRICULA: %d\n",aux->dados.matricula);
+                printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
+                aux = aux->prox;
+            }
+        }
+    }
+}
+
+void mostrarOrganizador(LISTAD *ld){  //Funcao de listagem dos congressistas cadastrados
+
+    if(ld == NULL){
+    }
+    else{
+        if(ld->inicio==NULL){
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t SEM ORGANIZADORES CADASTRADOS!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+        }
+        else{
+            ELEM* aux = ld->inicio;
+            printf("\n\n\t\t\t\t\t\t\t\tLISTA ORGANIZADORES: \n");
+            while(aux != NULL){
+                printf("\n\n\t\t\t\t\t\t\t\t-----------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t ORGANIZADOR: %s\n",aux->dados.nome);
+                printf("\n\t\t\t\t\t\t\t\t IDENTIDADE (RG): %d\n",aux->dados.rg);
+                printf("\n\t\t\t\t\t\t\t\t EMAIL: %s\n",aux->dados.email);
+                printf("\n\t\t\t\t\t\t\t\t MATRICULA: %d\n",aux->dados.matricula);
+                printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
+                aux = aux->prox;
+            }
+        }
+    }
+}
 
 LISTAD* criar(){
     LISTAD *ld = (LISTAD*) malloc(sizeof(LISTAD));  //Funcao para alocar a memoria para o usa de uma lista
@@ -181,39 +259,50 @@ void inserir(LISTAD *ld , CADASTRO a){   //Funcao para inserir os dados na lista
                 }
 
             }
-            printf("\nElemento inserido\n");
+            system("cls");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t USUARIO CADASTRADO!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
         }
     }
 }
 
-void mostrarCongressista(LISTAD *ld){  //Funcao de listagem dos congressistas cadastrados
-
-    if(ld == NULL){
+void inserirAlterado(LISTAD *ld , CADASTRO a){   //Funcao para inserir os dados na lista de cadastros
+    if(ld==NULL){
     }
     else{
-        if(ld->inicio==NULL){
-            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
-            printf("\n\t\t\t\t\t\t\t\t SEM CONGRESSISTAS CADASTRADOS!");
-            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
-        }
-        else{
-            ELEM* aux = ld->inicio;
-            printf("\n\n\t\t\t\t\t\t\t\tLISTA CONGRESSISTAS: \n");
-            while(aux != NULL){
-                printf("\n\n\t\t\t\t\t\t\t\t-----------------------------------\n");
-                printf("\n\t\t\t\t\t\t\t\t CONGRESSISTA: %s\n",aux->dados.nome);
-                printf("\n\t\t\t\t\t\t\t\t IDENTIDADE (RG): %d\n",aux->dados.rg);
-                printf("\n\t\t\t\t\t\t\t\t EMAIL: %s\n",aux->dados.email);
-                printf("\n\t\t\t\t\t\t\t\t CURSO: %s\n",aux->dados.curso);
-                printf("\n\t\t\t\t\t\t\t\t MATRICULA: %d\n",aux->dados.matricula);
-                printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
-                aux = aux->prox;
+        ELEM *novo = (ELEM*) malloc(sizeof(ELEM));
+        if(novo!=NULL){
+            novo->dados = a;
+            if(ld->inicio==NULL){
+                novo->ant=NULL;
+                novo->prox =NULL;
+                ld->inicio = novo;
+            }
+            else{
+                if(strcmp(ld->inicio->dados.nome,novo->dados.nome)>0){//Inserir no comeco da lista
+                    novo->ant=NULL;
+                    novo->prox=ld->inicio;
+                    ld->inicio->ant=novo;
+                    ld->inicio=novo;
+                }else{//Inserir no meio ou no fim na lista
+                    ELEM *ante,*aux=ld->inicio;
+                    while((aux!=NULL)&&(strcmp(aux->dados.nome,novo->dados.nome)<=0)){
+                        ante=aux;
+                        aux=aux->prox;
+                    }
+                    ante->prox=novo;
+                    novo->ant=ante;
+                    novo->prox=aux;
+                    if(aux!=NULL)
+                        aux->ant=novo;
+                }
+
             }
         }
     }
 }
-
-void removerAL(LISTAD *ld, char nomeBusca[]){ //Funcao de remover um dado alterado para que posteriormente
+void removerAlterado(LISTAD *ld, char nomeBusca[]){ //Funcao de remover um dado alterado para que posteriormente
                                             //o dado venha a ser ordenado em outra situacao
     ELEM *aux = ld->inicio;
         if(strcmp(nomeBusca,aux->dados.nome)== 0){//Se o dado estiver no inicio
@@ -237,10 +326,10 @@ void removerAL(LISTAD *ld, char nomeBusca[]){ //Funcao de remover um dado altera
             }
 }
 
-void alterar(LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
+void alterarCongressista(LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
     char nomeBusca[20], nomeNovo[20], cursoNovo[40];
     char emailNovo[40];
-    int opAlterar;
+    int opAlterar , achei = 0;
     CADASTRO x;
     if(ld==NULL){
             return;
@@ -261,7 +350,8 @@ void alterar(LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
             ELEM *aux = ld->inicio;
             while(aux!=NULL){       //Busca pelo nome digitado
                 if(strcmp(nomeBusca,aux->dados.nome)==0){ //Caso ache o nome opcoes de alteracoes
-                    system("cls");
+                        achei = 1;
+                        system("cls");
                         printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
                         printf("\n\n\t\t\t\t\t\t\t\tDIGITE O QUE DESEJA ALTERAR: \n\n");
                         printf("\t\t\t\t\t\t\t\t1 - NOME\n\t\t\t\t\t\t\t\t2 - CURSO");
@@ -280,7 +370,7 @@ void alterar(LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
 
                             system("cls");
                             printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
-                            printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOVO NOME: \n\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O NOVO NOME: \n\n");
                             printf("\t\t\t\t\t\t\t\tNOME: ");
                             setbuf(stdin,NULL);
                             fgets(nomeNovo,19,stdin);
@@ -306,7 +396,7 @@ void alterar(LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
                         case 2: //Opcao para mudar o curso
                             system("cls");
                             printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
-                            printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOVO CURSO: \n\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O NOVO CURSO: \n\n");
                             printf("\t\t\t\t\t\t\t\tCURSO: ");
                             setbuf(stdin,NULL);
                             fgets(cursoNovo,39,stdin);
@@ -320,7 +410,7 @@ void alterar(LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
                         case 3:
                             system("cls");
                             printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
-                            printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOVO EMAIL: \n\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O NOVO EMAIL: \n\n");
                             printf("\t\t\t\t\t\t\t\tEMAIL: ");
                             setbuf(stdin,NULL);
                             fgets(emailNovo,39,stdin);
@@ -334,7 +424,7 @@ void alterar(LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
                         default:
                             system("cls");
                             printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
-                            printf("\n\n\t\t\t\t\t\t\t\tDIGITE A NOVA IDENTIDADE(RG): \n\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE A NOVA IDENTIDADE(RG): \n\n");
                             printf("\t\t\t\t\t\t\t\tIDENTIDADE(RG): ");
                             scanf("%d",&aux->dados.rg);
                             while(aux->dados.rg<1000000 || aux->dados.rg>9999999){
@@ -344,6 +434,7 @@ void alterar(LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
                             printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
                             system("pause");
                             system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
                             printf("\n\t\t\t\t\t\t\t\tDIGITE NUMERO DA IDENTIDADE(RG): ");
                             scanf("%d",&aux->dados.rg);
                             }
@@ -357,14 +448,141 @@ void alterar(LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
                 }
                 aux=aux->prox;
             }
+            if(achei == 0){
+                system("cls");
+                printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t SEM USUARIOS COM ESTE NOME!");
+                printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            }
         }
     }
     if(opAlterar==1){ //Caso eu altere o nome entra aqui no if
-        removerAL(ld,nomeNovo);//Removo o dado que alterei
-        inserir(ld,x);//E o adiciono novamente para orderna-lo na lista
+        removerAlterado(ld,nomeNovo);//Removo o dado que alterei
+        inserirAlterado(ld,x);//E o adiciono novamente para orderna-lo na lista
     }
 }
 
+void alterarPalestrante(LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
+    char nomeBusca[20], nomeNovo[20];
+    char emailNovo[40];
+    int opAlterar , achei = 0;
+    CADASTRO x;
+    if(ld==NULL){
+            return;
+    }
+    else{
+        if(ld->inicio == NULL){ //Caso nao tenha nada na lista
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t SEM USUARIOS CADASTRADOS!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+        }
+        else{
+            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O USUARIO QUE DESEJA ALTERAR: \n\n");
+            printf("\n\n\t\t\t\t\t\t\t\t NOME DO USUARIO: ");
+            setbuf(stdin,NULL);
+            fgets(nomeBusca,19,stdin);
+            strupr(nomeBusca);
+            ELEM *aux = ld->inicio;
+            while(aux!=NULL){       //Busca pelo nome digitado
+                if(strcmp(nomeBusca,aux->dados.nome)==0){ //Caso ache o nome opcoes de alteracoes
+                        achei = 1;
+                        system("cls");
+                        printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                        printf("\n\n\t\t\t\t\t\t\t\tDIGITE O QUE DESEJA ALTERAR: \n\n");
+                        printf("\t\t\t\t\t\t\t\t1 - NOME\n\t\t\t\t\t\t\t\t2 - EMAIL");
+                        printf("\n\t\t\t\t\t\t\t\t3 - IDENTIDADE (RG)\n\t\t\t\t\t\t\t\t>> ");
+                        scanf("%d",&opAlterar);
+                    while(opAlterar<1 || opAlterar>3){
+                        system("cls");
+                        printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                        printf("\n\n\t\t\t\t\t\t\t\tDIGITE O QUE DESEJA ALTERAR: \n\n");
+                        printf("\t\t\t\t\t\t\t\t1 - NOME\n\t\t\t\t\t\t\t\t2 - EMAIL");
+                        printf("\n\t\t\t\t\t\t\t\t3 - IDENTIDADE (RG)\n\t\t\t\t\t\t\t\t>> ");
+                        scanf("%d",&opAlterar);
+                    }
+                    switch(opAlterar){
+                        case 1: //Opcao para mudar o nome
+
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O NOVO NOME: \n\n");
+                            printf("\t\t\t\t\t\t\t\t NOME: ");
+                            setbuf(stdin,NULL);
+                            fgets(nomeNovo,19,stdin);
+                            strupr(nomeNovo);
+                            ELEM *aux2 = ld->inicio;
+                            while(aux2!=NULL){
+                                if(strcmp(nomeNovo,aux2->dados.nome)==0){ //Caso edite para um nome ja cadastrado
+                                    system("cls");
+                                    printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                                    printf("\n\t\t\t\t\t\t\t\tNome ja esta cadastrado!");
+                                    printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                                    return;
+                                }
+                                aux2=aux2->prox;
+                            }
+                            strcpy(aux->dados.nome,nomeNovo);
+                            x = aux->dados; //Variavel responsavel em guardar onde o dado foi alterado
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t USUARIO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            break;
+                        case 2:
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O NOVO EMAIL: \n\n");
+                            printf("\t\t\t\t\t\t\t\t EMAIL: ");
+                            setbuf(stdin,NULL);
+                            fgets(emailNovo,39,stdin);
+                            strcpy(aux->dados.email,emailNovo);
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t USUARIO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+
+                            break;
+                        default:
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE A NOVA IDENTIDADE(RG): \n\n");
+                            printf("\t\t\t\t\t\t\t\t IDENTIDADE(RG): ");
+                            scanf("%d",&aux->dados.rg);
+                            while(aux->dados.rg<1000000 || aux->dados.rg>9999999){
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                            printf("\n\t\t\t\t\t\t\t\tIdentidade invalida!");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                            system("pause");
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t DIGITE NUMERO DA IDENTIDADE(RG): ");
+                            scanf("%d",&aux->dados.rg);
+                            }
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t USUARIO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+
+                            break;
+                    }
+                }
+                aux=aux->prox;
+            }
+            if(achei == 0){
+                system("cls");
+                printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t SEM USUARIOS COM ESTE NOME!");
+                printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            }
+        }
+    }
+    if(opAlterar==1){ //Caso eu altere o nome entra aqui no if
+        removerAlterado(ld,nomeNovo);//Removo o dado que alterei
+        inserirAlterado(ld,x);//E o adiciono novamente para orderna-lo na lista
+    }
+}
 void remover(LISTAD *ld){ //Funcao para remover dados na lista
     char nomeBusca[20];
     if(ld==NULL){
@@ -431,7 +649,7 @@ void liberar(LISTAD *ld){//Liberar a memoria da lista
     }
 }
 
-int cadastro(LISTAD *ld , CADASTRO *c , int m){ //Funcao de coleta de dados para serem inseridos na lista
+int cadastroCongressista(LISTAD *ld , CADASTRO *c , int m){ //Funcao de coleta de dados para serem inseridos na lista
     char nome[20] , curso[40];
     int busca = 0;
     if(ld==NULL){
@@ -461,7 +679,8 @@ int cadastro(LISTAD *ld , CADASTRO *c , int m){ //Funcao de coleta de dados para
                 printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
                 system("pause");
                 system("cls");
-                printf("\n\t\t\t\t\t\t\t\tDIGITE NUMERO DA IDENTIDADE(RG): ");
+                printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t DIGITE NUMERO DA IDENTIDADE(RG): ");
                 scanf("%d",&c->rg);
             }
             c->matricula = m;
@@ -508,6 +727,167 @@ int cadastro(LISTAD *ld , CADASTRO *c , int m){ //Funcao de coleta de dados para
                     printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
                     system("pause");
                     system("cls");
+                    printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                    printf("\n\t\t\t\t\t\t\t\t DIGITE NUMERO DA IDENTIDADE(RG): ");
+                    scanf("%d",&c->rg);
+                }
+                c->matricula = m;
+                return 1;
+            }
+        }
+    }
+}
+
+int cadastroPalestrante(LISTAD *ld , CADASTRO *c , int m){ //Funcao de coleta de dados para serem inseridos na lista
+    char nome[20];
+    int busca = 0;
+    if(ld==NULL){
+    }
+    else{
+        if(ld->inicio == NULL){
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\tCADASTRO PALESTRANTE: \n\n");
+            printf("\t\t\t\t\t\t\t\tDIGITE O NOME: ");
+            setbuf(stdin,NULL);
+            fgets(nome,19,stdin);
+            strupr(nome);
+            strcpy(c->nome,nome);
+            printf("\n\t\t\t\t\t\t\t\tDIGITE O EMAIL: ");
+            fgets(c->email,39,stdin);
+            printf("\n\t\t\t\t\t\t\t\tDIGITE NUMERO DA IDENTIDADE(RG): ");
+            scanf("%d",&c->rg);
+            while(c->rg<1000000 || c->rg>9999999){
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                printf("\n\t\t\t\t\t\t\t\tIdentidade invalida!");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                system("pause");
+                system("cls");
+                printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t DIGITE NUMERO DA IDENTIDADE(RG): ");
+                scanf("%d",&c->rg);
+            }
+            c->matricula = m;
+            return 1;
+        }
+        else{
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\tCADASTRO PALESTRANTE: \n\n");
+            printf("\t\t\t\t\t\t\t\tDIGITE O NOME: ");
+            setbuf(stdin,NULL);
+            fgets(nome,19,stdin);
+            strupr(nome);
+            strcpy(c->nome,nome);
+
+            ELEM *aux = ld->inicio;
+            while(aux!=NULL){
+                if(strcmp(nome,aux->dados.nome) == 0){
+                    busca++;
+                }
+                aux = aux->prox;
+            }
+            if(busca > 0){
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                printf("\n\t\t\t\t\t\t\t\tNome ja esta cadastrado!");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                return 0;
+            }
+            else{
+                printf("\n\t\t\t\t\t\t\t\tDIGITE O EMAIL: ");
+                fgets(c->email,39,stdin);
+                printf("\n\t\t\t\t\t\t\t\tDIGITE NUMERO DA IDENTIDADE(RG): ");
+                scanf("%d",&c->rg);
+                while(c->rg<1000000 || c->rg>9999999){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                    printf("\n\t\t\t\t\t\t\t\tIdentidade invalida!");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                    system("pause");
+                    system("cls");
+                    printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                    printf("\n\t\t\t\t\t\t\t\t DIGITE NUMERO DA IDENTIDADE(RG): ");
+                    scanf("%d",&c->rg);
+                }
+                c->matricula = m;
+                return 1;
+            }
+        }
+    }
+}
+
+int cadastroOrganizador(LISTAD *ld , CADASTRO *c , int m){ //Funcao de coleta de dados para serem inseridos na lista
+    char nome[20];
+    int busca = 0;
+    if(ld==NULL){
+    }
+    else{
+        if(ld->inicio == NULL){
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\tCADASTRO ORGANIZADOR: \n\n");
+            printf("\t\t\t\t\t\t\t\tDIGITE O NOME: ");
+            setbuf(stdin,NULL);
+            fgets(nome,19,stdin);
+            strupr(nome);
+            strcpy(c->nome,nome);
+            printf("\n\t\t\t\t\t\t\t\tDIGITE O EMAIL: ");
+            fgets(c->email,39,stdin);
+            printf("\n\t\t\t\t\t\t\t\tDIGITE NUMERO DA IDENTIDADE(RG): ");
+            scanf("%d",&c->rg);
+            while(c->rg<1000000 || c->rg>9999999){
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                printf("\n\t\t\t\t\t\t\t\tIdentidade invalida!");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                system("pause");
+                system("cls");
+                printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\tDIGITE NUMERO DA IDENTIDADE(RG): ");
+                scanf("%d",&c->rg);
+            }
+            c->matricula = m;
+            return 1;
+        }
+        else{
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\tCADASTRO ORGANIZADOR: \n\n");
+            printf("\t\t\t\t\t\t\t\tDIGITE O NOME: ");
+            setbuf(stdin,NULL);
+            fgets(nome,19,stdin);
+            strupr(nome);
+            strcpy(c->nome,nome);
+
+            ELEM *aux = ld->inicio;
+            while(aux!=NULL){
+                if(strcmp(nome,aux->dados.nome) == 0){
+                    busca++;
+                }
+                aux = aux->prox;
+            }
+            if(busca > 0){
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                printf("\n\t\t\t\t\t\t\t\tNome ja esta cadastrado!");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                return 0;
+            }
+            else{
+                printf("\n\t\t\t\t\t\t\t\tDIGITE O EMAIL: ");
+                fgets(c->email,39,stdin);
+                printf("\n\t\t\t\t\t\t\t\tDIGITE NUMERO DA IDENTIDADE(RG): ");
+                scanf("%d",&c->rg);
+                while(c->rg<1000000 || c->rg>9999999){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                    printf("\n\t\t\t\t\t\t\t\tIdentidade invalida!");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                    system("pause");
+                    system("cls");
+                    printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
                     printf("\n\t\t\t\t\t\t\t\tDIGITE NUMERO DA IDENTIDADE(RG): ");
                     scanf("%d",&c->rg);
                 }
@@ -518,24 +898,8 @@ int cadastro(LISTAD *ld , CADASTRO *c , int m){ //Funcao de coleta de dados para
     }
 }
 
-void cadastroOrganizadores(LISTAD *ld , CADASTRO *c , int m){
-    if(ld==NULL){
-    }
-    else{
-        if(ld->inicio == NULL){
-            system("cls");
-            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
-            printf("\n\t\t\t\t\t\t\t\tCADASTRO CONGRESSISTA: \n\n");
-            printf("\t\t\t\t\t\t\t\tDIGITE O NOME: ");
-            setbuf(stdin,NULL);
-            fgets(c->nome,19,stdin);
-            c->matricula = m;
-        }
-    }
-}
-
 int main(){
-    LISTAD *congressista = criar() , *palestrantes , *organizadores;
+    LISTAD *congressista = criar() , *palestrantes = criar() , *organizadores = criar();
     CADASTRO dados;
     int padraoMatricula = 10001;
     int opGeral, opCongressista , opPalestrante , opOrganizadores , opEventos;
@@ -573,7 +937,7 @@ int main(){
                     case 1:
                         system("cls");
                         int auxCadastro;
-                        auxCadastro = cadastro(congressista , &dados  , padraoMatricula);
+                        auxCadastro = cadastroCongressista(congressista , &dados  , padraoMatricula);
                         if(auxCadastro==1){
                           inserir(congressista,dados);
                           padraoMatricula++;
@@ -597,7 +961,7 @@ int main(){
                     case 3:
 
                         system("cls");
-                        alterar(congressista);
+                        alterarCongressista(congressista);
                         system("pause");
                         system("cls");
                         menu_congressista();
@@ -622,14 +986,150 @@ int main(){
 
                 }
             }
+            onCongre = 1;
             break;
 
 
         case 2:
+
+            system("cls");
+            menu_palestrante();
+
+            while(onPales){
+                scanf("%d",&opPalestrante);
+
+                while(opPalestrante<1 || opPalestrante>5){
+                system("cls");
+                menu_congressista();
+                scanf("%d",&opPalestrante);
+                }
+
+                switch(opPalestrante){
+
+                    case 1:
+                        system("cls");
+                        int auxCadastro;
+                        auxCadastro = cadastroPalestrante(palestrantes , &dados  , padraoMatricula);
+                        if(auxCadastro==1){
+                          inserir(palestrantes,dados);
+                          padraoMatricula++;
+                        }
+                        system("pause");
+                        system("cls");
+                        menu_palestrante();
+                        break;
+
+
+                    case 2:
+
+                        system("cls");
+                        mostrarPalestrante(palestrantes);
+                        system("pause");
+                        system("cls");
+                        menu_palestrante();
+                        break;
+
+
+                    case 3:
+
+                        system("cls");
+                        alterarPalestrante(palestrantes);
+                        system("pause");
+                        system("cls");
+                        menu_palestrante();
+                        break;
+
+
+                    case 4:
+
+                        system("cls");
+                        remover(palestrantes);
+                        system("pause");
+                        system("cls");
+                        menu_palestrante();
+                        break;
+
+
+                    default:
+                        system("cls");
+                        menu_incial();
+                        onPales = 0;
+                        break;
+
+                }
+            }
+            onPales = 1;
             break;
 
 
         case 3:
+            system("cls");
+            menu_organizadores();
+
+            while(onOrg){
+                scanf("%d",&opOrganizadores);
+
+                while(opOrganizadores<1 || opOrganizadores>5){
+                system("cls");
+                menu_organizadores();
+                scanf("%d",&opOrganizadores);
+                }
+
+                switch(opOrganizadores){
+
+                    case 1:
+                        system("cls");
+                        int auxCadastro;
+                        auxCadastro = cadastroPalestrante(organizadores , &dados  , padraoMatricula);
+                        if(auxCadastro==1){
+                          inserir(organizadores,dados);
+                          padraoMatricula++;
+                        }
+                        system("pause");
+                        system("cls");
+                        menu_organizadores();
+                        break;
+
+
+                    case 2:
+
+                        system("cls");
+                        mostrarOrganizador(organizadores);
+                        system("pause");
+                        system("cls");
+                        menu_organizadores();
+                        break;
+
+
+                    case 3:
+
+                        system("cls");
+                        alterarPalestrante(organizadores);
+                        system("pause");
+                        system("cls");
+                        menu_organizadores();
+                        break;
+
+
+                    case 4:
+
+                        system("cls");
+                        remover(organizadores);
+                        system("pause");
+                        system("cls");
+                        menu_organizadores();
+                        break;
+
+
+                    default:
+                        system("cls");
+                        menu_incial();
+                        onOrg = 0;
+                        break;
+
+                }
+            }
+            onOrg = 1;
             break;
 
 
@@ -644,4 +1144,6 @@ int main(){
       }
     }
     liberar(congressista);
+    liberar(palestrantes);
+    liberar(organizadores);
 }
