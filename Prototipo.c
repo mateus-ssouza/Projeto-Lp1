@@ -20,6 +20,35 @@ typedef struct{
     struct elemento *inicio;
 }LISTAD;
 
+typedef struct{
+    int hora, minuto;
+}HORA;
+
+typedef struct{
+    char palestrante[20];
+    char local[30];
+    char tema[50];
+    int cargaH;
+    HORA horario;
+    char membro1[20];
+    char membro2[20];
+    char membro3[20];
+    char membro4[20];
+    char membro5[20];
+    int quantMembros;
+}EVENTO;
+
+typedef struct arquivo{
+    EVENTO dados;
+    struct arquivo *ant;
+    struct arquivo *prox;
+}ARQ;
+
+typedef struct{
+    struct arquivo *inicio;
+}LISTAE;
+
+
 void menu_final(){
     int i;
     system("cls");
@@ -139,6 +168,68 @@ void menu_incial(){
     printf("\t\t\t\t\t\t\t\t-->> ");
 
 }
+void menu_palestra(){
+    printf("\n\n\n");
+    printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
+    printf("\t\t\t\t\t\t\t\t|       PALESTRA - SISTEMA DO ENCEC         |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t|    1 - Cadastrar                          |\n");
+    printf("\t\t\t\t\t\t\t\t|    2 - Listar                             |\n");
+    printf("\t\t\t\t\t\t\t\t|    3 - Editar                             |\n");
+    printf("\t\t\t\t\t\t\t\t|    4 - Remover                            |\n");
+    printf("\t\t\t\t\t\t\t\t|    5 - Sair                               |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
+    printf("\t\t\t\t\t\t\t\t-->> ");
+}
+void menu_grupoD(){
+    printf("\n\n\n");
+    printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
+    printf("\t\t\t\t\t\t\t\t|  GRUPOS DE DISCUSSOES - SISTEMA DO ENCEC  |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t|    1 - Cadastrar                          |\n");
+    printf("\t\t\t\t\t\t\t\t|    2 - Listar                             |\n");
+    printf("\t\t\t\t\t\t\t\t|    3 - Editar                             |\n");
+    printf("\t\t\t\t\t\t\t\t|    4 - Remover                            |\n");
+    printf("\t\t\t\t\t\t\t\t|    5 - Sair                               |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
+    printf("\t\t\t\t\t\t\t\t-->> ");
+}
+void menu_curso(){
+    printf("\n\n\n");
+    printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
+    printf("\t\t\t\t\t\t\t\t|       CURSO - SISTEMA DO ENCEC            |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t|    1 - Cadastrar                          |\n");
+    printf("\t\t\t\t\t\t\t\t|    2 - Listar                             |\n");
+    printf("\t\t\t\t\t\t\t\t|    3 - Editar                             |\n");
+    printf("\t\t\t\t\t\t\t\t|    4 - Remover                            |\n");
+    printf("\t\t\t\t\t\t\t\t|    5 - Sair                               |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
+    printf("\t\t\t\t\t\t\t\t-->> ");
+
+}
+void menu_oficina(){
+    printf("\n\n\n");
+    printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
+    printf("\t\t\t\t\t\t\t\t|       OFICINA - SISTEMA DO ENCEC          |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t|    1 - Cadastrar                          |\n");
+    printf("\t\t\t\t\t\t\t\t|    2 - Listar                             |\n");
+    printf("\t\t\t\t\t\t\t\t|    3 - Editar                             |\n");
+    printf("\t\t\t\t\t\t\t\t|    4 - Remover                            |\n");
+    printf("\t\t\t\t\t\t\t\t|    5 - Sair                               |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
+    printf("\t\t\t\t\t\t\t\t-->> ");
+}
+
 
 void mostrarCongressista(LISTAD *ld){  //Funcao de listagem dos congressistas cadastrados
 
@@ -898,12 +989,162 @@ int cadastroOrganizador(LISTAD *ld , CADASTRO *c , int m){ //Funcao de coleta de
     }
 }
 
+LISTAE* criarEventos(){
+    LISTAE *ld = (LISTAE*) malloc(sizeof(LISTAE));  //Funcao para alocar a memoria para o usa de uma lista
+    if(ld!=NULL){
+        ld->inicio = NULL;
+    }
+    return ld;
+}
+
+
+
+
+void cadastroEvento(LISTAE *le , EVENTO *e, LISTAD *ld){
+    char locais[8][30] = {"AUD 1","AUD 2","AUD 3","SALA 1","SALA 2","SALA 3","LAB 1","LAB 2"};
+    int opcaoLocal, i = 1;
+    char nome[20];
+
+    if(le == NULL){
+    }
+    else{
+        if(le->inicio == NULL && ld->inicio!=NULL){
+          system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t CADASTRO DO EVENTO: \n\n");
+            printf("\t\t\t\t\t\t\t\t DIGITE O TEMA: ");
+            setbuf(stdin,NULL);
+            fgets(e->tema,49,stdin);
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+            printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
+            printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+            printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+            printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+            scanf("%d",&opcaoLocal);
+
+            while(opcaoLocal<1 || opcaoLocal>8){
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+            printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
+            printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+            printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+            printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+            scanf("%d",&opcaoLocal);
+            }
+            switch(opcaoLocal){
+            case 1:
+                strcpy(e->local,locais[0]);
+                break;
+            case 2:
+                strcpy(e->local,locais[1]);
+                break;
+            case 3:
+                strcpy(e->local,locais[2]);
+                break;
+            case 4:
+                strcpy(e->local,locais[3]);
+                break;
+            case 5:
+                strcpy(e->local,locais[4]);
+                break;
+            case 6:
+                strcpy(e->local,locais[5]);
+                break;
+            case 7:
+                strcpy(e->local,locais[6]);
+                break;
+            default:
+                strcpy(e->local,locais[7]);
+                break;
+
+            }
+
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+            printf("\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
+            scanf("%d %d",&e->horario.hora,&e->horario.minuto);
+            while(e->horario.hora<8 || e->horario.hora > 12 || e->horario.minuto < 0 || e->horario.minuto > 59){
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                printf("\n\t\t\t\t\t\t\t\t Horario invalido!");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                system("pause");
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                printf("\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
+                scanf("%d %d",&e->horario.hora,&e->horario.minuto);
+            }
+
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+            printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+
+            ELEM *aux = ld->inicio;
+            while(aux!=NULL){
+                printf("\n\t\t\t\t\t\t\t\t %d - %s",i,aux->dados.nome);
+                i++;
+                aux = aux->prox;
+            }
+
+            printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O PALESTRANTE (DIGITE O NOME): ");
+            setbuf(stdin,NULL);
+            fgets(nome,19,stdin);
+            strupr(nome);
+
+            ELEM *aux2 = ld->inicio;
+            while(aux2!=NULL){
+                if(strcmp(nome,aux2->dados.nome)==0){
+                    strcpy(e->palestrante,nome);
+                    return;
+                }
+                aux2 = aux2->prox;
+            }
+
+            system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                printf("\n\t\t\t\t\t\t\t\t NOME NAO ESTA NA LISTA!");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+        }
+        else{
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                printf("\n\t\t\t\t\t\t\t\t NAO HA PALESTRANTES CADASTRADOS");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+        }
+    }
+}
+
+void liberarEventos(LISTAE *le){//Liberar a memoria da lista
+    if(le !=NULL){
+        ARQ * aux;
+        while(le->inicio!=NULL)
+        {
+            aux = le->inicio;
+            le->inicio = le->inicio->prox;
+            free(aux);
+        }
+        free(le);
+        printf("\nLista liberada\n");
+    }
+}
+
+
+
 int main(){
     LISTAD *congressista = criar() , *palestrantes = criar() , *organizadores = criar();
+    LISTAE *palestra = criarEventos() , *grupoD , *curso , *oficina;
+
     CADASTRO dados;
+    EVENTO dadosE;
+
     int padraoMatricula = 10001;
     int opGeral, opCongressista , opPalestrante , opOrganizadores , opEventos;
     int onGeral = 1 , onCongre = 1 , onPales = 1 , onOrg = 1 , onEven = 1;
+
+    int onEPale = 1 , onEGru = 1 , onECur = 1 , onOfi = 1;
+    int opEPalestra ,opEGrupo , opECurso, opEOficina;
+
     system("color 17");
     //menu_principal();
     system("cls");
@@ -917,7 +1158,7 @@ int main(){
         scanf("%d",&opGeral);
       }
 
-      switch(opGeral){
+      switch(opGeral){ // CASOS DO MENU GERAL
 
         case 1:
             system("cls");
@@ -1134,6 +1375,244 @@ int main(){
 
 
         case 4:
+            system("cls");
+            menu_eventos();
+
+            while(onEven){
+                scanf("%d",&opEventos);
+
+                while(opEventos<1 || opEventos>5){
+                system("cls");
+                menu_eventos();
+                scanf("%d",&opEventos);
+                }
+
+                switch(opEventos){
+
+                    case 1:
+
+                    system("cls");
+                    menu_palestra();
+
+                    while(onEPale){
+                        scanf("%d",&opEPalestra);
+
+                        while(opEPalestra<1 || opEPalestra>5){
+                        system("cls");
+                        menu_palestra();
+                        scanf("%d",&opEPalestra);
+                    }
+
+                        switch(opEPalestra){
+
+                        case 1:
+
+                            system("cls");
+                            cadastroEvento(palestra,&dadosE,palestrantes);
+                            system("pause");
+                            system("cls");
+                            menu_palestra();
+
+                            break;
+
+
+                        case 2:
+
+
+                            break;
+
+
+                        case 3:
+
+
+                            break;
+
+
+                        case 4:
+
+
+                            break;
+
+
+                        default:
+                            system("cls");
+                            menu_eventos();
+                            onEPale = 0;
+                            break;
+
+                        }
+                    }
+                    onEPale = 1;
+
+                        break;
+
+
+                    case 2:
+
+                    system("cls");
+                    menu_curso();
+
+                    while(onECur){
+                        scanf("%d",&opECurso);
+
+                        while(opECurso<1 || opECurso>5){
+                        system("cls");
+                        menu_curso();
+                        scanf("%d",&opECurso);
+                    }
+
+                        switch(opECurso){
+
+                        case 1:
+
+                            break;
+
+
+                        case 2:
+
+
+                            break;
+
+
+                        case 3:
+
+
+                            break;
+
+
+                        case 4:
+
+
+                            break;
+
+
+                        default:
+                            system("cls");
+                            menu_eventos();
+                            onECur = 0;
+                            break;
+
+                        }
+                    }
+                    onECur = 1;
+
+                        break;
+
+
+                    case 3:
+
+                    system("cls");
+                    menu_grupoD();
+
+                    while(onEGru){
+                        scanf("%d",&opEGrupo);
+
+                        while(opEGrupo<1 || opEGrupo>5){
+                        system("cls");
+                        menu_grupoD();
+                        scanf("%d",&opEGrupo);
+                    }
+
+                        switch(opEGrupo){
+
+                        case 1:
+
+                            break;
+
+
+                        case 2:
+
+
+                            break;
+
+
+                        case 3:
+
+
+                            break;
+
+
+                        case 4:
+
+
+                            break;
+
+
+                        default:
+                            system("cls");
+                            menu_eventos();
+                            onEGru = 0;
+                            break;
+
+                        }
+                    }
+                    onEGru = 1;
+
+                        break;
+
+
+                    case 4:
+                    system("cls");
+                    menu_oficina();
+
+                    while(onOfi){
+                        scanf("%d",&opEOficina);
+
+                        while(opEOficina<1 || opEOficina>5){
+                        system("cls");
+                        menu_oficina();
+                        scanf("%d",&opEOficina);
+                    }
+
+                        switch(opEOficina){
+
+                        case 1:
+
+
+                            break;
+
+
+                        case 2:
+
+
+                            break;
+
+
+                        case 3:
+
+
+                            break;
+
+
+                        case 4:
+
+
+                            break;
+
+
+                        default:
+                            system("cls");
+                            menu_eventos();
+                            onOfi = 0;
+                            break;
+
+                        }
+                    }
+                    onOfi = 1;
+
+                        break;
+
+
+                    default:
+                        system("cls");
+                        menu_incial();
+                        onEven = 0;
+                        break;
+
+                }
+            }
+            onEven = 1;
+
             break;
 
 
@@ -1146,4 +1625,5 @@ int main(){
     liberar(congressista);
     liberar(palestrantes);
     liberar(organizadores);
+    liberarEventos(palestra);
 }
