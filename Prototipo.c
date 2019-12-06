@@ -1432,10 +1432,11 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                 printf("\n\n\t\t\t\t\t\t\t\tDIGITE A QUANTIDADE DE MEMBROS: ");
                 scanf("%d",&numMembros);
             }
+            int on = 1;
             switch(numMembros){
             case 1:
 
-            while(1){
+            while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1451,9 +1452,9 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             strcpy(e->membro5,"NULO");
                             return 1;
                         }
+                        busca = busca->prox;
                     }
                     system("cls");
-
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1466,7 +1467,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                 break;
 
             case 2:
-            while(1){
+            while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 1: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1476,10 +1477,11 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                     while(busca!=NULL){
                         if(strcmp(busca->dados.nome,membro)==0){
                             strcpy(e->membro1,membro);
+                            on = 0;
                         }
+                        busca = busca->prox;
                     }
                     system("cls");
-
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1488,8 +1490,8 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         aux = aux->prox;
                     }
             }
-
-            while(1){
+            on = 1;
+            while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 2: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1504,8 +1506,8 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             strcpy(e->membro5,"NULO");
                             return 1;
                         }
+                        busca = busca->prox;
                     }
-
                     system("cls");
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
@@ -1519,7 +1521,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                 break;
 
             case 3:
-                while(1){
+                while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 1: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1529,9 +1531,11 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                     while(busca!=NULL){
                         if(strcmp(busca->dados.nome,membro)==0){
                             strcpy(e->membro1,membro);
+                            on = 0;
                         }
+                        busca = busca->prox;
                     }
-
+                    system("cls");
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1540,8 +1544,8 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         aux = aux->prox;
                     }
             }
-
-            while(1){
+            on = 1;
+            while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 2: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1551,11 +1555,12 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                     while(busca!=NULL){
                         if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0){
                             strcpy(e->membro2,membro);
+                            on = 0;
                         }
+                        busca = busca->prox;
                     }
 
                     system("cls");
-
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1564,7 +1569,8 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         aux = aux->prox;
                     }
             }
-            while(1){
+            on = 1;
+            while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1578,10 +1584,10 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             strcpy(e->membro5,"NULO");
                             return 1;
                         }
+                        busca = busca->prox;
                     }
 
                     system("cls");
-
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1594,7 +1600,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                 break;
             case 4:
 
-                while(1){
+                while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 1: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1604,9 +1610,11 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                     while(busca!=NULL){
                         if(strcmp(busca->dados.nome,membro)==0){
                             strcpy(e->membro1,membro);
+                            on = 0;
                         }
+                        busca = busca->prox;
                     }
-
+                    system("cls");
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1615,8 +1623,8 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         aux = aux->prox;
                     }
             }
-
-            while(1){
+            on = 1;
+            while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 2: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1626,11 +1634,12 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                     while(busca!=NULL){
                         if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0){
                             strcpy(e->membro2,membro);
+                            on = 0;
                         }
+                        busca = busca->prox;
                     }
 
                     system("cls");
-
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1639,7 +1648,8 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         aux = aux->prox;
                     }
             }
-            while(1){
+            on = 1;
+            while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1649,11 +1659,12 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                     while(busca!=NULL){
                         if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0){
                             strcpy(e->membro3,membro);
+                            on = 0;
                         }
+                        busca = busca->prox;
                     }
 
                     system("cls");
-
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1662,7 +1673,8 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         aux = aux->prox;
                     }
             }
-            while(1){
+            on = 1;
+            while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1675,10 +1687,10 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             strcpy(e->membro5,"NULO");
                             return 1;
                         }
+                        busca = busca->prox;
                     }
 
                     system("cls");
-
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1691,7 +1703,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                 break;
 
             default:
-                while(1){
+                while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 1: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1701,9 +1713,11 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                     while(busca!=NULL){
                         if(strcmp(busca->dados.nome,membro)==0){
                             strcpy(e->membro1,membro);
+                            on = 0;
                         }
+                        busca = busca->prox;
                     }
-
+                    system("cls");
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1712,8 +1726,8 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         aux = aux->prox;
                     }
             }
-
-                while(1){
+                on = 1;
+                while(on){
                         printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 2: ");
                         setbuf(stdin,NULL);
                         fgets(membro,19,stdin);
@@ -1723,11 +1737,12 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         while(busca!=NULL){
                             if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0){
                                 strcpy(e->membro2,membro);
+                                on = 0;
                             }
+                            busca = busca->prox;
                         }
 
                         system("cls");
-
                         printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                         printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                         ELEM *aux = ld->inicio;
@@ -1736,7 +1751,8 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             aux = aux->prox;
                         }
                 }
-                while(1){
+                on = 1;
+                while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1746,11 +1762,12 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                     while(busca!=NULL){
                         if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0){
                             strcpy(e->membro3,membro);
+                            on = 0;
                         }
+                        busca = busca->prox;
                     }
 
                     system("cls");
-
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1759,7 +1776,8 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         aux = aux->prox;
                     }
                 }
-                while(1){
+                on = 1;
+                while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1769,11 +1787,12 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                     while(busca!=NULL){
                         if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0 && strcmp(e->membro3,membro)!=0){
                             strcpy(e->membro4,membro);
+                            on = 0;
                         }
+                        busca = busca->prox;
                     }
 
                     system("cls");
-
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1782,7 +1801,8 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         aux = aux->prox;
                     }
                 }
-                while(1){
+                on = 1;
+                while(on){
                     printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
                     setbuf(stdin,NULL);
                     fgets(membro,19,stdin);
@@ -1794,10 +1814,10 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             strcpy(e->membro5,membro);
                             return 1;
                         }
+                        busca = busca->prox;
                     }
 
                     system("cls");
-
                     printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                     printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
                     ELEM *aux = ld->inicio;
@@ -1805,6 +1825,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
                         aux = aux->prox;
                     }
+                    busca = busca->prox;
                 }
 
 
@@ -2758,6 +2779,11 @@ int main(){
 
                         case 4:
 
+                            system("cls");
+                            removerEvento(grupoD);
+                            system("pause");
+                            system("cls");
+                            menu_grupoD();
 
                             break;
 
