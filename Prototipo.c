@@ -1041,15 +1041,16 @@ void inserirEvento(LISTAE *le , EVENTO a){   //Funcao para inserir os dados na l
 
 int cadastroEvento(LISTAE *le , EVENTO *e, LISTAD *ld){
     char locais[8][30] = {"AUD 1","AUD 2","AUD 3","SALA 1","SALA 2","SALA 3","LAB 1","LAB 2"};
-    int opcaoLocal, i = 1;
+    int opcaoLocal, i = 1 , busca = 0;
     char nome[20];
 
     if(le == NULL){
         return 0;
     }
     else{
-        if(le->inicio == NULL && ld->inicio!=NULL){
-          system("cls");
+        if(ld->inicio!=NULL){
+            if(le->inicio == NULL){
+            system("cls");
             printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
             printf("\n\t\t\t\t\t\t\t\t CADASTRO DO EVENTO: \n\n");
             printf("\t\t\t\t\t\t\t\t DIGITE O TEMA: ");
@@ -1160,34 +1161,33 @@ int cadastroEvento(LISTAE *le , EVENTO *e, LISTAD *ld){
                 printf("\n\t\t\t\t\t\t\t\t---------------------------");
                 printf("\n\t\t\t\t\t\t\t\t NOME NAO ESTA NA LISTA!");
                 printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
-        }
-        else{
-                system("cls");
-                printf("\n\t\t\t\t\t\t\t\t---------------------------------");
-                printf("\n\t\t\t\t\t\t\t\t NAO HA PALESTRANTES CADASTRADOS");
-                printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
-                return 0;
-        }
-    }
-}
+            }
 
-int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
-    char locais[8][30] = {"AUD 1","AUD 2","AUD 3","SALA 1","SALA 2","SALA 3","LAB 1","LAB 2"};
-    int opcaoLocal, i = 1;
-    char nome[20];
+            else{
 
-    if(le == NULL){
-        return 0;
-    }
-    else{
-        if(le->inicio == NULL && ld->inicio!=NULL){
-          system("cls");
+            system("cls");
             printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
             printf("\n\t\t\t\t\t\t\t\t CADASTRO DO EVENTO: \n\n");
             printf("\t\t\t\t\t\t\t\t DIGITE O TEMA: ");
             setbuf(stdin,NULL);
             fgets(e->tema,49,stdin);
             strupr(e->tema);
+
+            ARQ *buscaTema = le->inicio;
+            while(buscaTema!=NULL){
+                if(strcmp(e->tema,buscaTema->dados.tema) == 0){
+                    busca++;
+                }
+                buscaTema = buscaTema->prox;
+            }
+            if(busca > 0){
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                printf("\n\t\t\t\t\t\t\t\t Tema ja esta cadastrado!");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                return 0;
+            }
+
             system("cls");
             printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
             printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
@@ -1250,7 +1250,7 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
             printf("\n\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
             setbuf(stdin,NULL);
             scanf("%d %d",&e->horario.hora,&e->horario.minuto);
-            while(e->horario.hora<11 || e->horario.hora > 17 || e->horario.minuto < 0 || e->horario.minuto > 59){
+            while(e->horario.hora<8 || e->horario.hora > 12 || e->horario.minuto < 0 || e->horario.minuto > 59){
                 system("cls");
                 printf("\n\t\t\t\t\t\t\t\t---------------------------");
                 printf("\n\t\t\t\t\t\t\t\t Horario invalido!");
@@ -1292,6 +1292,281 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
                 printf("\n\t\t\t\t\t\t\t\t---------------------------");
                 printf("\n\t\t\t\t\t\t\t\t NOME NAO ESTA NA LISTA!");
                 printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+            }
+
+        }
+        else{
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                printf("\n\t\t\t\t\t\t\t\t NAO HA PALESTRANTES CADASTRADOS");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                return 0;
+        }
+    }
+}
+
+int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
+    char locais[8][30] = {"AUD 1","AUD 2","AUD 3","SALA 1","SALA 2","SALA 3","LAB 1","LAB 2"};
+    int opcaoLocal, i = 1 , busca = 0;
+    char nome[20];
+
+    if(le == NULL){
+        return 0;
+    }
+    else{
+        if(ld->inicio!=NULL){
+            if(le->inicio == NULL){
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t CADASTRO DO EVENTO: \n\n");
+                printf("\t\t\t\t\t\t\t\t DIGITE O TEMA: ");
+                setbuf(stdin,NULL);
+                fgets(e->tema,49,stdin);
+                strupr(e->tema);
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
+                printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+                printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+                printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+                scanf("%d",&opcaoLocal);
+
+                while(opcaoLocal<1 || opcaoLocal>8){
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
+                printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+                printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+                printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+                scanf("%d",&opcaoLocal);
+                }
+                switch(opcaoLocal){
+                case 1:
+                    strcpy(e->local,locais[0]);
+                break;
+                case 2:
+                    strcpy(e->local,locais[1]);
+                    break;
+                case 3:
+                    strcpy(e->local,locais[2]);
+                    break;
+                case 4:
+                    strcpy(e->local,locais[3]);
+                    break;
+                case 5:
+                    strcpy(e->local,locais[4]);
+                    break;
+                case 6:
+                    strcpy(e->local,locais[5]);
+                    break;
+                case 7:
+                    strcpy(e->local,locais[6]);
+                    break;
+                default:
+                    strcpy(e->local,locais[7]);
+                    break;
+
+                }
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t------------------------------\n");
+                printf("\t\t\t\t\t\t\t\t CARGA HORARIA DO EVENTO: ");
+                scanf("%d",&e->cargaH);
+
+                while(e->cargaH < 20 || e->cargaH >60){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t CARGA HORARIA DO EVENTO: ");
+                    scanf("%d",&e->cargaH);
+                }
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
+                setbuf(stdin,NULL);
+                scanf("%d %d",&e->horario.hora,&e->horario.minuto);
+                while(e->horario.hora<11 || e->horario.hora > 17 || e->horario.minuto < 0 || e->horario.minuto > 59){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                    printf("\n\t\t\t\t\t\t\t\t Horario invalido!");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                    system("pause");
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
+                    setbuf(stdin,NULL);
+                    scanf("%d %d",&e->horario.hora,&e->horario.minuto);
+                }
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+
+                ELEM *aux = ld->inicio;
+                while(aux!=NULL){
+                    printf("\n\t\t\t\t\t\t\t\t %d - %s",i,aux->dados.nome);
+                    i++;
+                    aux = aux->prox;
+                }
+
+                printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O PALESTRANTE (DIGITE O NOME): ");
+                setbuf(stdin,NULL);
+                fgets(nome,19,stdin);
+                strupr(nome);
+
+                    ELEM *aux2 = ld->inicio;
+                while(aux2!=NULL){
+                    if(strcmp(nome,aux2->dados.nome)==0){
+                        strcpy(e->palestrante,nome);
+                        return 1;
+                    }
+                    aux2 = aux2->prox;
+                }
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                printf("\n\t\t\t\t\t\t\t\t NOME NAO ESTA NA LISTA!");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+            }
+            else{
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t CADASTRO DO EVENTO: \n\n");
+                printf("\t\t\t\t\t\t\t\t DIGITE O TEMA: ");
+                setbuf(stdin,NULL);
+                fgets(e->tema,49,stdin);
+                strupr(e->tema);
+
+                ARQ *buscaTema = le->inicio;
+                while(buscaTema!=NULL){
+                    if(strcmp(e->tema,buscaTema->dados.tema) == 0){
+                        busca++;
+                    }
+                    buscaTema = buscaTema->prox;
+                }
+                if(busca > 0){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                    printf("\n\t\t\t\t\t\t\t\t Tema ja esta cadastrado!");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                    return 0;
+                }
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t CADASTRO DO EVENTO: \n\n");
+                printf("\t\t\t\t\t\t\t\t DIGITE O TEMA: ");
+                setbuf(stdin,NULL);
+                fgets(e->tema,49,stdin);
+                strupr(e->tema);
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
+                printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+                printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+                printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+                scanf("%d",&opcaoLocal);
+
+                while(opcaoLocal<1 || opcaoLocal>8){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
+                    printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+                    printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+                    printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+                    scanf("%d",&opcaoLocal);
+                }
+                switch(opcaoLocal){
+                case 1:
+                    strcpy(e->local,locais[0]);
+                    break;
+                case 2:
+                    strcpy(e->local,locais[1]);
+                    break;
+                case 3:
+                    strcpy(e->local,locais[2]);
+                    break;
+                case 4:
+                    strcpy(e->local,locais[3]);
+                    break;
+                case 5:
+                    strcpy(e->local,locais[4]);
+                    break;
+                case 6:
+                    strcpy(e->local,locais[5]);
+                    break;
+                case 7:
+                    strcpy(e->local,locais[6]);
+                    break;
+                default:
+                    strcpy(e->local,locais[7]);
+                    break;
+
+                }
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t------------------------------\n");
+                printf("\t\t\t\t\t\t\t\t CARGA HORARIA DO EVENTO: ");
+                scanf("%d",&e->cargaH);
+
+                while(e->cargaH < 20 || e->cargaH >60){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t CARGA HORARIA DO EVENTO: ");
+                    scanf("%d",&e->cargaH);
+                }
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
+                setbuf(stdin,NULL);
+                scanf("%d %d",&e->horario.hora,&e->horario.minuto);
+                while(e->horario.hora<11 || e->horario.hora > 17 || e->horario.minuto < 0 || e->horario.minuto > 59){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                    printf("\n\t\t\t\t\t\t\t\t Horario invalido!");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                    system("pause");
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
+                    setbuf(stdin,NULL);
+                    scanf("%d %d",&e->horario.hora,&e->horario.minuto);
+                }
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+
+                ELEM *aux = ld->inicio;
+                while(aux!=NULL){
+                    printf("\n\t\t\t\t\t\t\t\t %d - %s",i,aux->dados.nome);
+                    i++;
+                    aux = aux->prox;
+                }
+
+                printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O PALESTRANTE (DIGITE O NOME): ");
+                setbuf(stdin,NULL);
+                fgets(nome,19,stdin);
+                strupr(nome);
+
+                ELEM *aux2 = ld->inicio;
+                while(aux2!=NULL){
+                    if(strcmp(nome,aux2->dados.nome)==0){
+                        strcpy(e->palestrante,nome);
+                        return 1;
+                    }
+                    aux2 = aux2->prox;
+                }
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                printf("\n\t\t\t\t\t\t\t\t NOME NAO ESTA NA LISTA!");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+
+            }
         }
         else{
                 system("cls");
@@ -1305,14 +1580,15 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
 
 int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
     char locais[8][30] = {"AUD 1","AUD 2","AUD 3","SALA 1","SALA 2","SALA 3","LAB 1","LAB 2"};
-    int opcaoLocal, i = 1, quantMembros = 0, numMembros;
+    int opcaoLocal, i = 1, busca = 0, quantMembros = 0, numMembros;
     char membro[20];
 
     if(le == NULL){
         return 0;
     }
     else{
-        if(le->inicio == NULL && ld->inicio!=NULL){
+        if(ld->inicio!=NULL){
+        if(le->inicio == NULL){
             ELEM *membros = ld->inicio;
             while(membros!=NULL){
                 quantMembros++;
@@ -1832,7 +2108,550 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                 break;
 
             }
+        }
+        else{
 
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t CADASTRO DO EVENTO: \n\n");
+                printf("\t\t\t\t\t\t\t\t DIGITE O TEMA: ");
+                setbuf(stdin,NULL);
+                fgets(e->tema,49,stdin);
+                strupr(e->tema);
+
+            ARQ *buscaTema = le->inicio;
+            while(buscaTema!=NULL){
+                if(strcmp(e->tema,buscaTema->dados.tema) == 0){
+                    busca++;
+                }
+                buscaTema = buscaTema->prox;
+            }
+            if(busca > 0){
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                printf("\n\t\t\t\t\t\t\t\t Tema ja esta cadastrado!");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                return 0;
+            }
+
+
+           ELEM *membros = ld->inicio;
+            while(membros!=NULL){
+                quantMembros++;
+                membros = membros->prox;
+            }
+
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+            printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
+            printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+            printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+            printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+            scanf("%d",&opcaoLocal);
+
+            while(opcaoLocal<1 || opcaoLocal>8){
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+            printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
+            printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+            printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+            printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+            scanf("%d",&opcaoLocal);
+            }
+            switch(opcaoLocal){
+            case 1:
+                strcpy(e->local,locais[0]);
+                break;
+            case 2:
+                strcpy(e->local,locais[1]);
+                break;
+            case 3:
+                strcpy(e->local,locais[2]);
+                break;
+            case 4:
+                strcpy(e->local,locais[3]);
+                break;
+            case 5:
+                strcpy(e->local,locais[4]);
+                break;
+            case 6:
+                strcpy(e->local,locais[5]);
+                break;
+            case 7:
+                strcpy(e->local,locais[6]);
+                break;
+            default:
+                strcpy(e->local,locais[7]);
+                break;
+
+            }
+
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t------------------------------\n");
+            printf("\t\t\t\t\t\t\t\t CARGA HORARIA DO EVENTO: ");
+            scanf("%d",&e->cargaH);
+
+            while(e->cargaH < 20 || e->cargaH >60){
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t------------------------------\n");
+                printf("\t\t\t\t\t\t\t\t CARGA HORARIA DO EVENTO: ");
+                scanf("%d",&e->cargaH);
+            }
+
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
+            setbuf(stdin,NULL);
+            scanf("%d %d",&e->horario.hora,&e->horario.minuto);
+            while(e->horario.hora<11 || e->horario.hora > 17 || e->horario.minuto < 0 || e->horario.minuto > 59){
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                printf("\n\t\t\t\t\t\t\t\t Horario invalido!");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                system("pause");
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                printf("\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
+                setbuf(stdin,NULL);
+                scanf("%d %d",&e->horario.hora,&e->horario.minuto);
+            }
+
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+            printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+
+            ELEM *aux = ld->inicio;
+            while(aux!=NULL){
+                printf("\n\t\t\t\t\t\t\t\t %d - %s",i,aux->dados.nome);
+                i++;
+                aux = aux->prox;
+            }
+            printf("\n\n\t\t\t\t\t\t\t\tDIGITE A QUANTIDADE DE MEMBROS: ");
+            scanf("%d",&numMembros);
+            while(numMembros < 0 || numMembros > quantMembros || numMembros > 5){
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t-----------------------------");
+                printf("\n\t\t\t\t\t\t\t\t Numero de membros invalido!");
+                printf("\n\t\t\t\t\t\t\t\t-----------------------------\n\n");
+                system("pause");
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                ELEM *aux = ld->inicio;
+                i = 1;
+                while(aux!=NULL){
+                    printf("\n\t\t\t\t\t\t\t\t %d - %s",i,aux->dados.nome);
+                    i++;
+                    aux = aux->prox;
+                }
+                printf("\n\n\t\t\t\t\t\t\t\tDIGITE A QUANTIDADE DE MEMBROS: ");
+                scanf("%d",&numMembros);
+            }
+            int on = 1;
+            switch(numMembros){
+            case 1:
+
+            while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0){
+                            strcpy(e->membro1,membro);
+                            strcpy(e->membro2,"NULO");
+                            strcpy(e->membro3,"NULO");
+                            strcpy(e->membro4,"NULO");
+                            strcpy(e->membro5,"NULO");
+                            return 1;
+                        }
+                        busca = busca->prox;
+                    }
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+            }
+
+                break;
+
+            case 2:
+            while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 1: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0){
+                            strcpy(e->membro1,membro);
+                            on = 0;
+                        }
+                        busca = busca->prox;
+                    }
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+            }
+            on = 1;
+            while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 2: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0){
+                            strcpy(e->membro2,membro);
+                            strcpy(e->membro3,"NULO");
+                            strcpy(e->membro4,"NULO");
+                            strcpy(e->membro5,"NULO");
+                            return 1;
+                        }
+                        busca = busca->prox;
+                    }
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+            }
+
+                break;
+
+            case 3:
+                while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 1: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0){
+                            strcpy(e->membro1,membro);
+                            on = 0;
+                        }
+                        busca = busca->prox;
+                    }
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+            }
+            on = 1;
+            while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 2: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0){
+                            strcpy(e->membro2,membro);
+                            on = 0;
+                        }
+                        busca = busca->prox;
+                    }
+
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+            }
+            on = 1;
+            while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0){
+                            strcpy(e->membro3,membro);
+                            strcpy(e->membro4,"NULO");
+                            strcpy(e->membro5,"NULO");
+                            return 1;
+                        }
+                        busca = busca->prox;
+                    }
+
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+            }
+
+                break;
+            case 4:
+
+                while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 1: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0){
+                            strcpy(e->membro1,membro);
+                            on = 0;
+                        }
+                        busca = busca->prox;
+                    }
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+            }
+            on = 1;
+            while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 2: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0){
+                            strcpy(e->membro2,membro);
+                            on = 0;
+                        }
+                        busca = busca->prox;
+                    }
+
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+            }
+            on = 1;
+            while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0){
+                            strcpy(e->membro3,membro);
+                            on = 0;
+                        }
+                        busca = busca->prox;
+                    }
+
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+            }
+            on = 1;
+            while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0 && strcmp(e->membro3,membro)!=0){
+                            strcpy(e->membro4,membro);
+                            strcpy(e->membro5,"NULO");
+                            return 1;
+                        }
+                        busca = busca->prox;
+                    }
+
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+            }
+
+                break;
+
+            default:
+                while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 1: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0){
+                            strcpy(e->membro1,membro);
+                            on = 0;
+                        }
+                        busca = busca->prox;
+                    }
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+            }
+                on = 1;
+                while(on){
+                        printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 2: ");
+                        setbuf(stdin,NULL);
+                        fgets(membro,19,stdin);
+                        strupr(membro);
+
+                        ELEM *busca = ld->inicio;
+                        while(busca!=NULL){
+                            if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0){
+                                strcpy(e->membro2,membro);
+                                on = 0;
+                            }
+                            busca = busca->prox;
+                        }
+
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                        printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                        ELEM *aux = ld->inicio;
+                        while(aux!=NULL){
+                            printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                            aux = aux->prox;
+                        }
+                }
+                on = 1;
+                while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0){
+                            strcpy(e->membro3,membro);
+                            on = 0;
+                        }
+                        busca = busca->prox;
+                    }
+
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+                }
+                on = 1;
+                while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0 && strcmp(e->membro3,membro)!=0){
+                            strcpy(e->membro4,membro);
+                            on = 0;
+                        }
+                        busca = busca->prox;
+                    }
+
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+                }
+                on = 1;
+                while(on){
+                    printf("\n\n\t\t\t\t\t\t\t\tDIGITE O NOME DO MEMBRO 3: ");
+                    setbuf(stdin,NULL);
+                    fgets(membro,19,stdin);
+                    strupr(membro);
+
+                    ELEM *busca = ld->inicio;
+                    while(busca!=NULL){
+                        if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0 && strcmp(e->membro3,membro)!=0 && strcmp(e->membro4,membro)!=0){
+                            strcpy(e->membro5,membro);
+                            return 1;
+                        }
+                        busca = busca->prox;
+                    }
+
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+                    ELEM *aux = ld->inicio;
+                    while(aux!=NULL){
+                        printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                        aux = aux->prox;
+                    }
+                    busca = busca->prox;
+                }
+
+
+                break;
+
+            }
+
+
+
+        }
         }
         else{
                 system("cls");
@@ -2079,6 +2898,233 @@ void removerEvento(LISTAE *le){ //Funcao para remover dados na lista
 
 }
 
+void alterarEventoT(LISTAE *le , LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
+    char nomeBusca[50], nomeNovo[50] , palestrante[20];
+    int opAlterar , achei = 0 , opcaoLocal;
+    char locais[8][30] = {"AUD 1","AUD 2","AUD 3","SALA 1","SALA 2","SALA 3","LAB 1","LAB 2"};
+    if(le==NULL){
+            return;
+    }
+    else{
+        if(le->inicio == NULL){ //Caso nao tenha nada na lista
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t SEM EVENTOS CADASTRADOS!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+        }
+        else{
+            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O EVENTO QUE DESEJA ALTERAR: \n\n");
+            printf("\n\t\t\t\t\t\t\t\t EVENTOS CADASTRADOS: \n");
+            ARQ *lista = le->inicio;
+            while(lista!=NULL){
+                printf("\n\t\t\t\t\t\t\t\t - %s",lista->dados.tema);
+                lista = lista->prox;
+            }
+            printf("\n\n\t\t\t\t\t\t\t\t TEMA DO EVENTO: ");
+            setbuf(stdin,NULL);
+            fgets(nomeBusca,49,stdin);
+            strupr(nomeBusca);
+            ARQ *aux = le->inicio;
+            while(aux!=NULL){       //Busca pelo nome digitado
+                if(strcmp(nomeBusca,aux->dados.tema)==0){ //Caso ache o nome opcoes de alteracoes
+                        achei = 1;
+                        system("cls");
+                        printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                        printf("\n\n\t\t\t\t\t\t\t\tDIGITE O QUE DESEJA ALTERAR: \n\n");
+                        printf("\t\t\t\t\t\t\t\t1 - TEMA \n\t\t\t\t\t\t\t\t2 - LOCAL");
+                        printf("\n\t\t\t\t\t\t\t\t3 - HORARIO\n\t\t\t\t\t\t\t\t4 - CARGA HORARIA ");
+                        printf("\n\t\t\t\t\t\t\t\t5 - PALESTRANTE\n\n\t\t\t\t\t\t\t\t>> ");
+                        scanf("%d",&opAlterar);
+                    while(opAlterar<1 || opAlterar>5){
+                        system("cls");
+                        printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                        printf("\n\n\t\t\t\t\t\t\t\tDIGITE O QUE DESEJA ALTERAR: \n\n");
+                        printf("\t\t\t\t\t\t\t\t1 - TEMA \n\t\t\t\t\t\t\t\t2 - LOCAL");
+                        printf("\n\t\t\t\t\t\t\t\t3 - HORARIO\n\t\t\t\t\t\t\t\t4 - CARGA HORARIA ");
+                        printf("\n\t\t\t\t\t\t\t\t5 - PALESTRANTE\n\n\t\t\t\t\t\t\t\t>> ");
+                        scanf("%d",&opAlterar);
+                    }
+                    switch(opAlterar){
+                        case 1: //Opcao para mudar o nome
+
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O NOVO TEMA: \n\n");
+                            printf("\t\t\t\t\t\t\t\t TEMA: ");
+                            setbuf(stdin,NULL);
+                            fgets(nomeNovo,49,stdin);
+                            strupr(nomeNovo);
+                            ARQ *aux2 = le->inicio;
+                            while(aux2!=NULL){
+                                if(strcmp(nomeNovo,aux2->dados.tema)==0){ //Caso edite para um nome ja cadastrado
+                                    system("cls");
+                                    printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                                    printf("\n\t\t\t\t\t\t\t\t Tema ja esta cadastrado!");
+                                    printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                                    return;
+                                }
+                                aux2=aux2->prox;
+                            }
+                            strcpy(aux->dados.tema,nomeNovo);
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t EVENTO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            break;
+                        case 2:
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O NOVO LOCAL: \n\n");
+                            printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+                            printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+                            printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+                            scanf("%d",&opcaoLocal);
+                            while(opcaoLocal<1 || opcaoLocal>8){
+                                system("cls");
+                                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                                printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
+                                printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+                                printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+                                printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+                                scanf("%d",&opcaoLocal);
+                            }
+                            switch(opcaoLocal){
+                            case 1:
+                                strcpy(aux->dados.local,locais[0]);
+                                break;
+                            case 2:
+                                strcpy(aux->dados.local,locais[1]);
+                                break;
+                            case 3:
+                                strcpy(aux->dados.local,locais[2]);
+                                break;
+                            case 4:
+                                strcpy(aux->dados.local,locais[3]);
+                                break;
+                            case 5:
+                                strcpy(aux->dados.local,locais[4]);
+                                break;
+                            case 6:
+                                strcpy(aux->dados.local,locais[5]);
+                                break;
+                            case 7:
+                                strcpy(aux->dados.local,locais[6]);
+                                break;
+                            default:
+                            strcpy(aux->dados.local,locais[7]);
+                            break;
+
+                            }
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t EVENTO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+
+                            break;
+                        case 3:
+
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t NOVO HORARIO DO EVENTO: ");
+                            scanf("%d %d",&aux->dados.horario.hora,&aux->dados.horario.minuto);
+                            while(aux->dados.horario.hora < 12 || aux->dados.horario.hora > 17 || aux->dados.horario.minuto < 0 || aux->dados.horario.minuto > 59){
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t Horario invalido!");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                            system("pause");
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t NOVO HORARIO DO EVENTO: ");
+                            scanf("%d %d",&aux->dados.horario.hora,&aux->dados.horario.minuto);
+                            }
+
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t EVENTO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+
+                            break;
+
+                        case 4:
+
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE A NOVA CARGA HORARIA: \n\n");
+                            printf("\t\t\t\t\t\t\t\t CARGA HORARIA: ");
+                            scanf("%d",&aux->dados.cargaH);
+                            while(aux->dados.cargaH<20 || aux->dados.cargaH>60){
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t Carga horaria invalida!");
+                            printf("\n\t\t\t\t\t\t\t\t------------------------------\n\n");
+                            system("pause");
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\t\t\t\t\t\t\t\t CARGA HORARIA: ");
+                            scanf("%d",&aux->dados.cargaH);
+                            }
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t EVENTO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+
+                            break;
+
+                        default:
+
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                            printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+
+                            ELEM *pales = ld->inicio;
+                            while(pales!=NULL){
+                            printf("\n\t\t\t\t\t\t\t\t- %s",pales->dados.nome);
+                            pales = pales->prox;
+                            }
+
+                            printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O PALESTRANTE (DIGITE O NOME): ");
+                            setbuf(stdin,NULL);
+                            fgets(palestrante,19,stdin);
+                            strupr(palestrante);
+                            while(strcmp(palestrante,aux->dados.palestrante)!=0){
+                                    system("cls");
+                                    printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                                    printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
+
+                                    ELEM *pales = ld->inicio;
+                                    while(pales!=NULL){
+                                        printf("\n\t\t\t\t\t\t\t\t- %s",pales->dados.nome);
+                                        pales = pales->prox;
+                                    }
+
+                                    printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O PALESTRANTE (DIGITE O NOME): ");
+                                    setbuf(stdin,NULL);
+                                    fgets(palestrante,19,stdin);
+                                    strupr(palestrante);
+                            }
+                            strcpy(aux->dados.palestrante,palestrante);
+
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t EVENTO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+
+                            break;
+                    }
+                }
+                aux=aux->prox;
+            }
+            if(achei == 0){
+                system("cls");
+                printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t SEM EVENTOS COM ESTE NOME!");
+                printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            }
+        }
+    }
+}
+
 void alterarEvento(LISTAE *le , LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
     char nomeBusca[50], nomeNovo[50] , palestrante[20];
     int opAlterar , achei = 0 , opcaoLocal;
@@ -2285,6 +3331,322 @@ void alterarEvento(LISTAE *le , LISTAD *ld){  //Funcao responsavel em editar os 
                                     strupr(palestrante);
                             }
                             strcpy(aux->dados.palestrante,palestrante);
+
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t EVENTO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+
+                            break;
+                    }
+                }
+                aux=aux->prox;
+            }
+            if(achei == 0){
+                system("cls");
+                printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t SEM EVENTOS COM ESTE NOME!");
+                printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            }
+        }
+    }
+}
+
+void alterarEventoG(LISTAE *le , LISTAD *ld){  //Funcao responsavel em editar os dados de uma lista
+    char nomeBusca[50], nomeNovo[50] , membro[20] , novoMembro[20];
+    int opAlterar , achei = 0 , opcaoLocal, quantM = 0 , numMembro , quantD = 0;
+    char locais[8][30] = {"AUD 1","AUD 2","AUD 3","SALA 1","SALA 2","SALA 3","LAB 1","LAB 2"};
+
+
+    if(le==NULL){
+            return;
+    }
+    else{
+        if(le->inicio == NULL){ //Caso nao tenha nada na lista
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t SEM EVENTOS CADASTRADOS!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+        }
+        else{
+            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O EVENTO QUE DESEJA ALTERAR: \n\n");
+            printf("\n\t\t\t\t\t\t\t\t EVENTOS CADASTRADOS: \n");
+            ARQ *lista = le->inicio;
+            while(lista!=NULL){
+                printf("\n\t\t\t\t\t\t\t\t - %s",lista->dados.tema);
+                lista = lista->prox;
+            }
+            printf("\n\n\t\t\t\t\t\t\t\t TEMA DO EVENTO: ");
+            setbuf(stdin,NULL);
+            fgets(nomeBusca,49,stdin);
+            strupr(nomeBusca);
+            ARQ *aux = le->inicio;
+            while(aux!=NULL){       //Busca pelo nome digitado
+                if(strcmp(nomeBusca,aux->dados.tema)==0){ //Caso ache o nome opcoes de alteracoes
+                        achei = 1;
+                        system("cls");
+                        printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                        printf("\n\n\t\t\t\t\t\t\t\tDIGITE O QUE DESEJA ALTERAR: \n\n");
+                        printf("\t\t\t\t\t\t\t\t1 - TEMA \n\t\t\t\t\t\t\t\t2 - LOCAL");
+                        printf("\n\t\t\t\t\t\t\t\t3 - HORARIO\n\t\t\t\t\t\t\t\t4 - CARGA HORARIA ");
+                        printf("\n\t\t\t\t\t\t\t\t5 - MEMBROS\n\n\t\t\t\t\t\t\t\t>> ");
+                        scanf("%d",&opAlterar);
+                    while(opAlterar<1 || opAlterar>5){
+                        system("cls");
+                        printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                        printf("\n\n\t\t\t\t\t\t\t\tDIGITE O QUE DESEJA ALTERAR: \n\n");
+                        printf("\t\t\t\t\t\t\t\t1 - TEMA \n\t\t\t\t\t\t\t\t2 - LOCAL");
+                        printf("\n\t\t\t\t\t\t\t\t3 - HORARIO\n\t\t\t\t\t\t\t\t4 - CARGA HORARIA ");
+                        printf("\n\t\t\t\t\t\t\t\t5 - PALESTRANTE\n\n\t\t\t\t\t\t\t\t>> ");
+                        scanf("%d",&opAlterar);
+                    }
+                    switch(opAlterar){
+                        case 1: //Opcao para mudar o nome
+
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O NOVO TEMA: \n\n");
+                            printf("\t\t\t\t\t\t\t\t TEMA: ");
+                            setbuf(stdin,NULL);
+                            fgets(nomeNovo,49,stdin);
+                            strupr(nomeNovo);
+                            ARQ *aux2 = le->inicio;
+                            while(aux2!=NULL){
+                                if(strcmp(nomeNovo,aux2->dados.tema)==0){ //Caso edite para um nome ja cadastrado
+                                    system("cls");
+                                    printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                                    printf("\n\t\t\t\t\t\t\t\t Tema ja esta cadastrado!");
+                                    printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                                    return;
+                                }
+                                aux2=aux2->prox;
+                            }
+                            strcpy(aux->dados.tema,nomeNovo);
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t EVENTO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            break;
+                        case 2:
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE O NOVO LOCAL: \n\n");
+                            printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+                            printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+                            printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+                            scanf("%d",&opcaoLocal);
+                            while(opcaoLocal<1 || opcaoLocal>8){
+                                system("cls");
+                                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
+                                printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
+                                printf("\n\t\t\t\t\t\t\t\t 1 - AUD 1\n\t\t\t\t\t\t\t\t 2 - AUD 2\n\t\t\t\t\t\t\t\t 3 - AUD 3");
+                                printf("\n\t\t\t\t\t\t\t\t 4 - SALA 1\n\t\t\t\t\t\t\t\t 5 - SALA 2\n\t\t\t\t\t\t\t\t 6 - SALA 3");
+                                printf("\n\t\t\t\t\t\t\t\t 7 - LAB 1\n\t\t\t\t\t\t\t\t 8 - LAB 2\n\t\t\t\t\t\t\t\t >> ");
+                                scanf("%d",&opcaoLocal);
+                            }
+                            switch(opcaoLocal){
+                            case 1:
+                                strcpy(aux->dados.local,locais[0]);
+                                break;
+                            case 2:
+                                strcpy(aux->dados.local,locais[1]);
+                                break;
+                            case 3:
+                                strcpy(aux->dados.local,locais[2]);
+                                break;
+                            case 4:
+                                strcpy(aux->dados.local,locais[3]);
+                                break;
+                            case 5:
+                                strcpy(aux->dados.local,locais[4]);
+                                break;
+                            case 6:
+                                strcpy(aux->dados.local,locais[5]);
+                                break;
+                            case 7:
+                                strcpy(aux->dados.local,locais[6]);
+                                break;
+                            default:
+                            strcpy(aux->dados.local,locais[7]);
+                            break;
+
+                            }
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t EVENTO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+
+                            break;
+                        case 3:
+
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t NOVO HORARIO DO EVENTO: ");
+                            scanf("%d %d",&aux->dados.horario.hora,&aux->dados.horario.minuto);
+                            while(aux->dados.horario.hora < 12 || aux->dados.horario.hora > 17 || aux->dados.horario.minuto < 0 || aux->dados.horario.minuto > 59){
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t Horario invalido!");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                            system("pause");
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t NOVO HORARIO DO EVENTO: ");
+                            scanf("%d %d",&aux->dados.horario.hora,&aux->dados.horario.minuto);
+                            }
+
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t EVENTO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+
+                            break;
+
+                        case 4:
+
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\n\n\t\t\t\t\t\t\t\t DIGITE A NOVA CARGA HORARIA: \n\n");
+                            printf("\t\t\t\t\t\t\t\t CARGA HORARIA: ");
+                            scanf("%d",&aux->dados.cargaH);
+                            while(aux->dados.cargaH<20 || aux->dados.cargaH>60){
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t Carga horaria invalida!");
+                            printf("\n\t\t\t\t\t\t\t\t------------------------------\n\n");
+                            system("pause");
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+                            printf("\t\t\t\t\t\t\t\t CARGA HORARIA: ");
+                            scanf("%d",&aux->dados.cargaH);
+                            }
+                            system("cls");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                            printf("\n\t\t\t\t\t\t\t\t EVENTO ALTERADO!");
+                            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+
+                            break;
+
+                        default:
+
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                            printf("\t\t\t\t\t\t\t\t LISTA DE MEMBROS: \n");
+
+                            printf("\n\t\t\t\t\t\t\t\t MEMBRO 1: %s\n",aux->dados.membro1);
+                            quantM++;
+                            if(strcmp(aux->dados.membro2,"NULO")!=0){
+                                printf("\n\t\t\t\t\t\t\t\t MEMBRO 2: %s\n",aux->dados.membro2);
+                                quantM++;
+                            }
+                            if(strcmp(aux->dados.membro3,"NULO")!=0){
+                                printf("\n\t\t\t\t\t\t\t\t MEMBRO 3: %s\n",aux->dados.membro3);
+                                quantM++;
+                            }
+                            if(strcmp(aux->dados.membro4,"NULO")!=0){
+                                printf("\n\t\t\t\t\t\t\t\t MEMBRO 4: %s\n",aux->dados.membro4);
+                                quantM++;
+                            }
+                            if(strcmp(aux->dados.membro5,"NULO")!=0){
+                                printf("\n\t\t\t\t\t\t\t\t MEMBRO 5: %s\n",aux->dados.membro5);
+                                quantM++;
+                            }
+
+                            printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O MEMBRO (DIGITE O NOME): ");
+                            setbuf(stdin,NULL);
+                            fgets(membro,19,stdin);
+                            strupr(membro);
+
+                            while(strcmp(membro,aux->dados.membro1)!=0 && strcmp(membro,aux->dados.membro2)!=0 && strcmp(membro,aux->dados.membro3)!=0 && strcmp(membro,aux->dados.membro4)!=0 && strcmp(membro,aux->dados.membro5)!=0){
+                                quantM = 0;
+                                system("cls");
+                                printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
+                                printf("\t\t\t\t\t\t\t\t LISTA DE MEMBROS: \n");
+
+                                printf("\n\t\t\t\t\t\t\t\t MEMBRO 1: %s\n",aux->dados.membro1);
+                                quantM++;
+                                if(strcmp(aux->dados.membro2,"NULO")!=0){
+                                    printf("\n\t\t\t\t\t\t\t\t MEMBRO 2: %s\n",aux->dados.membro2);
+                                    quantM++;
+                                }
+                                if(strcmp(aux->dados.membro3,"NULO")!=0){
+                                    printf("\n\t\t\t\t\t\t\t\t MEMBRO 3: %s\n",aux->dados.membro3);
+                                    quantM++;
+                                }
+                                if(strcmp(aux->dados.membro4,"NULO")!=0){
+                                    printf("\n\t\t\t\t\t\t\t\t MEMBRO 4: %s\n",aux->dados.membro4);
+                                    quantM++;
+                                }
+                                if(strcmp(aux->dados.membro5,"NULO")!=0){
+                                    printf("\n\t\t\t\t\t\t\t\t MEMBRO 5: %s\n",aux->dados.membro5);
+                                    quantM++;
+                                }
+
+                                printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O MEMBRO (DIGITE O NOME): ");
+                                setbuf(stdin,NULL);
+                                fgets(membro,19,stdin);
+                                strupr(membro);
+                            }
+
+                            ELEM *verQuant = ld->inicio;
+                            while(verQuant!=NULL){
+                                quantD++;
+                                verQuant = verQuant->prox;
+                            }
+
+                            int on = 1;
+                            while(on){
+
+                                if(quantM >= quantD){
+
+                                    system("cls");
+                                    printf("\n\n\t\t\t\t\t\t\t\t-----------------------------------------\n");
+                                    printf("\n\t\t\t\t\t\t\t\t MEMBROS DISPONIVEIS IGUAIS OS CADASTRADOS!");
+                                    printf("\n\n\t\t\t\t\t\t\t\t-----------------------------------------\n");
+                                    return;
+
+                                }
+
+                                system("cls");
+                                printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                printf("\t\t\t\t\t\t\t\t LISTA MEMBROS DISPONIVEIS: \n\n");
+
+                                ELEM *lista = ld->inicio;
+                                while(lista != NULL){
+                                    printf("\t\t\t\t\t\t\t\t- %s\n",lista->dados.nome);
+                                    lista = lista->prox;
+                                }
+
+                                printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O NOVO MEMBRO: ");
+                                setbuf(stdin,NULL);
+                                fgets(novoMembro,19,stdin);
+                                strupr(novoMembro);
+
+                                if(strcmp(aux->dados.membro1,novoMembro)!=0 && strcmp(aux->dados.membro1,membro)== 0){
+                                    strcpy(aux->dados.membro1,novoMembro);
+                                    on = 0;
+                                }
+                                if(strcmp(aux->dados.membro2,novoMembro)!=0 && strcmp(aux->dados.membro2,membro)== 0){
+                                    strcpy(aux->dados.membro2,novoMembro);
+                                    on = 0;
+                                }
+                                if(strcmp(aux->dados.membro3,novoMembro)!=0 && strcmp(aux->dados.membro3,membro)== 0){
+                                    strcpy(aux->dados.membro3,novoMembro);
+                                    on = 0;
+                                }
+                                if(strcmp(aux->dados.membro4,novoMembro)!=0 && strcmp(aux->dados.membro4,membro)== 0){
+                                    strcpy(aux->dados.membro4,novoMembro);
+                                    on = 0;
+                                }
+                                if(strcmp(aux->dados.membro5,novoMembro)!=0 && strcmp(aux->dados.membro5,membro)== 0){
+                                    strcpy(aux->dados.membro5,novoMembro);
+                                    on = 0;
+                                }
+
+                            }
+
+
+
 
                             system("cls");
                             printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
@@ -2698,7 +4060,7 @@ int main(){
                         case 3:
 
                             system("cls");
-                            alterarEvento(curso,palestrantes);
+                            alterarEventoT(curso,palestrantes);
                             system("pause");
                             system("cls");
                             menu_curso();
@@ -2773,6 +4135,11 @@ int main(){
 
                         case 3:
 
+                            system("cls");
+                            alterarEventoG(grupoD,palestrantes);
+                            system("pause");
+                            system("cls");
+                            menu_grupoD();
 
                             break;
 
@@ -2844,7 +4211,7 @@ int main(){
                         case 3:
 
                             system("cls");
-                            alterarEvento(oficina,palestrantes);
+                            alterarEventoT(oficina,palestrantes);
                             system("pause");
                             system("cls");
                             menu_oficina();
