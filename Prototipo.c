@@ -49,6 +49,25 @@ typedef struct{
     struct arquivo *inicio;
 }LISTAE;
 
+typedef struct{
+    char congre[20];
+    char pales[10][50];
+    char grupoD[10][50];
+    char curso[20];
+    char oficina[20];
+    int numpa,numgp,numCr,numOf;
+
+}INSCRICAO;
+
+typedef struct inscricao{
+    INSCRICAO dados;
+    struct inscricao *ant;
+    struct inscricao *prox;
+}INS;
+
+typedef struct{
+    struct inscricao *inicio;
+}LISTAI;
 
 void menu_final(){
     int i;
@@ -162,8 +181,8 @@ void menu_incial(){
     printf("\t\t\t\t\t\t\t\t|    2 - Palestrantes                       |\n");
     printf("\t\t\t\t\t\t\t\t|    3 - Organizadores                      |\n");
     printf("\t\t\t\t\t\t\t\t|    4 - Eventos                            |\n");
-    printf("\t\t\t\t\t\t\t\t|    5 - Sair                               |\n");
-    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t|    5 - Inscricoes                         |\n");
+    printf("\t\t\t\t\t\t\t\t|    6 - Sair                               |\n");
     printf("\t\t\t\t\t\t\t\t|                                           |\n");
     printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
     printf("\t\t\t\t\t\t\t\t-->> ");
@@ -230,7 +249,21 @@ void menu_oficina(){
     printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
     printf("\t\t\t\t\t\t\t\t-->> ");
 }
-
+void menu_inscricoes(){
+    printf("\n\n\n");
+    printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
+    printf("\t\t\t\t\t\t\t\t|       INSCRICAO - SISTEMA DO ENCEC        |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t|    1 - Inscrever                          |\n");
+    printf("\t\t\t\t\t\t\t\t|    2 - Listar                             |\n");
+    printf("\t\t\t\t\t\t\t\t|    3 - Editar                             |\n");
+    printf("\t\t\t\t\t\t\t\t|    4 - Cancelar                           |\n");
+    printf("\t\t\t\t\t\t\t\t|    5 - Sair                               |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t|                                           |\n");
+    printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
+    printf("\t\t\t\t\t\t\t\t-->> ");
+}
 
 void mostrarCongressista(LISTAD *ld){  //Funcao de listagem dos congressistas cadastrados
 
@@ -989,6 +1022,7 @@ int cadastroOrganizador(LISTAD *ld , CADASTRO *c , int m){ //Funcao de coleta de
         }
     }
 }
+
 
 LISTAE* criarEventos(){
     LISTAE *ld = (LISTAE*) malloc(sizeof(LISTAE));  //Funcao para alocar a memoria para o usa de uma lista
@@ -3683,17 +3717,846 @@ void liberarEventos(LISTAE *le){//Liberar a memoria da lista
 }
 
 
+LISTAI* criarI(){
+    LISTAI *li = (LISTAI*) malloc(sizeof(LISTAI));  //Funcao para alocar a memoria para o usa de uma lista
+    if(li!=NULL){
+        li->inicio = NULL;
+    }
+    return li;
+}
+
+void inserirIns(LISTAI *li ,INSCRICAO c){
+    if(li==NULL){
+    }
+    else{
+        INS *novo = (INS*) malloc(sizeof(INS));
+        if(novo!=NULL){
+            novo->dados = c;
+            if(li->inicio==NULL){
+                novo->ant=NULL;
+                novo->prox =NULL;
+                li->inicio = novo;
+            }
+            else{
+                if(strcmp(li->inicio->dados.congre,novo->dados.congre)>0){//Inserir no comeco da lista
+                    novo->ant=NULL;
+                    novo->prox=li->inicio;
+                    li->inicio->ant=novo;
+                    li->inicio=novo;
+                }else{//Inserir no meio ou no fim na lista
+                    INS *ante,*aux=li->inicio;
+                    while((aux!=NULL)&&(strcmp(aux->dados.congre,novo->dados.congre)<=0)){
+                        ante=aux;
+                        aux=aux->prox;
+                    }
+                    ante->prox=novo;
+                    novo->ant=ante;
+                    novo->prox=aux;
+                    if(aux!=NULL)
+                        aux->ant=novo;
+                }
+
+            }
+            system("cls");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t INSCRICAO EFETUADA!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+        }
+    }
+
+}
+
+int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE *curso , LISTAE *ofic , LISTAE *grup){
+    char nomeC[20] , nomeP[50];
+    int achei = 0 , opcao, nomeIgual = 0;
+    if(li==NULL){
+    }
+    else{
+        if(congre->inicio!=NULL){
+            if(li->inicio==NULL){
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t------------------------------------\n");
+                printf("\t\t\t\t\t\t\t\t LISTA DOS CONGRESSISTAS: \n");
+                ELEM *aux = congre->inicio;
+                while(aux!=NULL){
+                    printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                    aux = aux->prox;
+                }
+                printf("\n\n\t\t\t\t\t\t\t\t NOME DO CONGRESSISTA: ");
+                setbuf(stdin,NULL);
+                fgets(nomeC,19,stdin);
+                strupr(nomeC);
+                ELEM *aux2 = congre->inicio;
+                while(aux2!=NULL){
+                    if(strcmp(nomeC,aux2->dados.nome)==0){
+                        achei = 1;
+                    }
+                    aux2 = aux2->prox;
+                }
+                if(achei==0){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                    printf("\n\t\t\t\t\t\t\t\t CONGRESSISTA NAO ENCONTRADO!");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                    return 0;
+                }
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t------------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\tOPCOES DE EVENTOS: \n");
+                printf("\n\t\t\t\t\t\t\t\t 1 - PALESTRA");
+                printf("\n\t\t\t\t\t\t\t\t 2 - CURSO");
+                printf("\n\t\t\t\t\t\t\t\t 3 - G. DISCUSSAO");
+                printf("\n\t\t\t\t\t\t\t\t 4 - OFICINA");
+                printf("\n\t\t\t\t\t\t\t\t >> ");
+                scanf("%d",&opcao);
+
+                while(opcao<1 || opcao>4){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t------------------------------------\n");
+                    printf("\n\t\t\t\t\t\t\t\tOPCOES DE EVENTOS: \n");
+                    printf("\n\t\t\t\t\t\t\t\t 1 - PALESTRA");
+                    printf("\n\t\t\t\t\t\t\t\t 2 - CURSO");
+                    printf("\n\t\t\t\t\t\t\t\t 3 - G. DISCUSSAO");
+                    printf("\n\t\t\t\t\t\t\t\t 4 - OFICINA");
+                    printf("\n\t\t\t\t\t\t\t\t >> ");
+                    scanf("%d",&opcao);
+                }
+
+                switch(opcao){
+                case 1:
+                    if(pale->inicio==NULL){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t NAO HA PALESTRAS!");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                        return 0;
+                    }
+                    else{
+
+                        int on = 1;
+                        while(on){
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t LISTA DE PALESTRAS\n");
+                            ARQ *palestras = pale->inicio;
+                            while(palestras!=NULL){
+                                printf("\n\t\t\t\t\t\t\t\t - %s",palestras->dados.tema);
+                                palestras = palestras->prox;
+                            }
+                            printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA A PALESTRA: ");
+                            setbuf(stdin,NULL);
+                            fgets(nomeP,49,stdin);
+                            strupr(nomeP);
+
+                             ARQ *buscaP = pale->inicio;
+                             while(buscaP!=NULL){
+                                if(strcmp(nomeP,buscaP->dados.tema)==0){
+                                    strcpy(i->congre,nomeC);
+                                    i->numpa = 1;
+                                    i->numgp = 0;
+                                    i->numOf = 0;
+                                    i->numCr = 0;
+                                    strcpy(i->pales[i->numpa-1],nomeP);
+                                    on = 0;
+                                }
+                                buscaP = buscaP->prox;
+                             }
+
+                        }
+                        return 1;
+
+                    }
+                    break;
+                case 2:
+
+                    if(curso->inicio==NULL){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t NAO HA CURSOS!");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                        return 0;
+                    }
+                    else{
+
+                        int on = 1;
+                        while(on){
+
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t LISTA DE CURSOS\n");
+                            ARQ *cur = curso->inicio;
+                            while(cur!=NULL){
+                                printf("\n\t\t\t\t\t\t\t\t - %s",cur->dados.tema);
+                                cur = cur->prox;
+                            }
+                            printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O CURSO: ");
+                            setbuf(stdin,NULL);
+                            fgets(nomeP,49,stdin);
+                            strupr(nomeP);
+
+                             ARQ *buscaP = curso->inicio;
+                             while(buscaP!=NULL){
+                                if(strcmp(nomeP,buscaP->dados.tema)==0){
+                                    strcpy(i->congre,nomeC);
+                                    strcpy(i->curso,nomeP);
+                                    i->numpa = 0;
+                                    i->numgp = 0;
+                                    i->numOf = 0;
+                                    i->numCr = 1;
+                                    on = 0;
+                                }
+                                buscaP = buscaP->prox;
+                             }
+
+
+                        }
+                    }
+
+                        return 1;
+
+                    break;
+                case 3:
+
+                    if(grup->inicio==NULL){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t NAO HA GRUPOS D.!");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                        return 0;
+                    }
+                    else{
+
+                        int on = 1;
+                        while(on){
+
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t LISTA DE GRUPOS D.\n");
+                            ARQ *gr = grup->inicio;
+                            while(gr!=NULL){
+                                printf("\n\t\t\t\t\t\t\t\t - %s",gr->dados.tema);
+                                gr = gr->prox;
+                            }
+                            printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O GRUPO D.: ");
+                            setbuf(stdin,NULL);
+                            fgets(nomeP,49,stdin);
+                            strupr(nomeP);
+
+                            ARQ *buscaP = grup->inicio;
+                            while(buscaP!=NULL){
+                                if(strcmp(nomeP,buscaP->dados.tema)==0){
+                                    strcpy(i->congre,nomeC);
+                                    i->numgp = 1;
+                                    i->numpa = 0;
+                                    i->numOf = 0;
+                                    i->numCr = 0;
+                                    strcpy(i->grupoD[i->numgp-1],nomeP);
+                                    on = 0;
+                                }
+                                buscaP = buscaP->prox;
+                             }
+                        }
+                    }
+                        return 1;
+
+                    break;
+
+                default:
+
+                    if(ofic->inicio==NULL){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t NAO HA OFICINAS!");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                        return 0;
+                    }
+                    else{
+
+                        int on = 1;
+                        while(on){
+
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t LISTA DE OFICINAS\n");
+                            ARQ *ofi = ofic->inicio;
+                            while(ofi!=NULL){
+                                printf("\n\t\t\t\t\t\t\t\t - %s",ofi->dados.tema);
+                                ofi = ofi->prox;
+                            }
+                            printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA A OFICINA: ");
+                            setbuf(stdin,NULL);
+                            fgets(nomeP,49,stdin);
+                            strupr(nomeP);
+
+                            ARQ *buscaP = ofic->inicio;
+                            while(buscaP!=NULL){
+                                if(strcmp(nomeP,buscaP->dados.tema)==0){
+                                    strcpy(i->congre,nomeC);
+                                    strcpy(i->oficina,nomeP);
+                                    i->numpa = 0;
+                                    i->numgp = 0;
+                                    i->numOf = 1;
+                                    i->numCr = 0;
+                                    on = 0;
+                                }
+                                buscaP = buscaP->prox;
+                             }
+                        }
+                    }
+
+                        return 1;
+
+                    break;
+                }
+
+
+            }
+            else{
+
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t------------------------------------\n");
+                printf("\t\t\t\t\t\t\t\t LISTA DOS CONGRESSISTAS: \n");
+                ELEM *aux = congre->inicio;
+                while(aux!=NULL){
+                    printf("\n\t\t\t\t\t\t\t\t - %s",aux->dados.nome);
+                    aux = aux->prox;
+                }
+                printf("\n\n\t\t\t\t\t\t\t\t NOME DO CONGRESSISTA: ");
+                setbuf(stdin,NULL);
+                fgets(nomeC,19,stdin);
+                strupr(nomeC);
+                ELEM *aux2 = congre->inicio;
+                while(aux2!=NULL){
+                    if(strcmp(nomeC,aux2->dados.nome)==0){
+                        achei = 1;
+                    }
+                    aux2 = aux2->prox;
+                }
+                if(achei==0){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                    printf("\n\t\t\t\t\t\t\t\t CONGRESSISTA NAO ENCONTRADO!");
+                    printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                    return 0;
+                }
+
+                INS *aux3 = li->inicio;     //Caso seja o mesmo nome se inscrevendo novamente.
+                while(aux3!=NULL){
+                    if(strcmp(nomeC,aux3->dados.congre)==0){
+
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t------------------------------------\n");
+                        printf("\n\t\t\t\t\t\t\t\tOPCOES DE EVENTOS: \n");
+                        printf("\n\t\t\t\t\t\t\t\t 1 - PALESTRA");
+                        printf("\n\t\t\t\t\t\t\t\t 2 - CURSO");
+                        printf("\n\t\t\t\t\t\t\t\t 3 - G. DISCUSSAO");
+                        printf("\n\t\t\t\t\t\t\t\t 4 - OFICINA");
+                        printf("\n\t\t\t\t\t\t\t\t >> ");
+                        scanf("%d",&opcao);
+
+                    while(opcao<1 || opcao>4){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t------------------------------------\n");
+                        printf("\n\t\t\t\t\t\t\t\tOPCOES DE EVENTOS: \n");
+                        printf("\n\t\t\t\t\t\t\t\t 1 - PALESTRA");
+                        printf("\n\t\t\t\t\t\t\t\t 2 - CURSO");
+                        printf("\n\t\t\t\t\t\t\t\t 3 - G. DISCUSSAO");
+                        printf("\n\t\t\t\t\t\t\t\t 4 - OFICINA");
+                        printf("\n\t\t\t\t\t\t\t\t >> ");
+                        scanf("%d",&opcao);
+                    }
+
+                    switch(opcao){
+                    case 1:
+                        if(pale->inicio==NULL){
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t NAO HA PALESTRAS!");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                            return 0;
+                        }
+                        else{
+
+                            int on = 1;
+                            while(on){
+                                system("cls");
+                                printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                                printf("\n\t\t\t\t\t\t\t\t LISTA DE PALESTRAS\n");
+                                ARQ *palestras = pale->inicio;
+                                while(palestras!=NULL){
+                                    printf("\n\t\t\t\t\t\t\t\t - %s",palestras->dados.tema);
+                                    palestras = palestras->prox;
+                                }
+                                printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA A PALESTRA: ");
+                                setbuf(stdin,NULL);
+                                fgets(nomeP,49,stdin);
+                                strupr(nomeP);
+
+                                ARQ *buscaP = pale->inicio;
+                                while(buscaP!=NULL){
+                                    if(strcmp(nomeP,buscaP->dados.tema)==0){
+
+                                        strcpy(aux3->dados.congre,nomeC);
+                                        aux3->dados.numpa = aux3->dados.numpa+1;
+                                        strcpy(aux3->dados.pales[aux3->dados.numpa-1],nomeP);
+                                        system("cls");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        printf("\n\t\t\t\t\t\t\t\t INSCRICAO EFETUADA!");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        on = 0;
+                                    }
+                                    buscaP = buscaP->prox;
+                                }
+
+                            }
+                            return 0;
+
+                        }
+                        break;
+                    case 2:
+
+                        if(curso->inicio==NULL){
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t NAO HA CURSOS!");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                            return 0;
+                        }
+                        else{
+
+                            int on = 1;
+                            while(on){
+
+                                system("cls");
+                                printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                                printf("\n\t\t\t\t\t\t\t\t LISTA DE CURSOS\n");
+                                ARQ *cur = curso->inicio;
+                                while(cur!=NULL){
+                                    printf("\n\t\t\t\t\t\t\t\t - %s",cur->dados.tema);
+                                    cur = cur->prox;
+                                }
+                                printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O CURSO: ");
+                                setbuf(stdin,NULL);
+                                fgets(nomeP,49,stdin);
+                                strupr(nomeP);
+
+                                ARQ *buscaP = curso->inicio;
+                                while(buscaP!=NULL){
+                                    if(strcmp(nomeP,buscaP->dados.tema)==0){
+                                        strcpy(aux3->dados.congre,nomeC);
+                                        strcpy(aux3->dados.curso,nomeP);
+                                        aux3->dados.numCr = 1;
+
+                                        system("cls");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        printf("\n\t\t\t\t\t\t\t\t INSCRICAO EFETUADA!");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        on = 0;
+                                    }
+                                    buscaP = buscaP->prox;
+                                }
+
+
+                            }
+                        }
+
+                            return 0;
+
+                        break;
+                    case 3:
+
+                        if(grup->inicio==NULL){
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t NAO HA GRUPOS D.!");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                            return 0;
+                        }
+                        else{
+
+                            int on = 1;
+                            while(on){
+
+                                system("cls");
+                                printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                                printf("\n\t\t\t\t\t\t\t\t LISTA DE GRUPOS D.\n");
+                                ARQ *gr = grup->inicio;
+                                while(gr!=NULL){
+                                    printf("\n\t\t\t\t\t\t\t\t - %s",gr->dados.tema);
+                                    gr = gr->prox;
+                                }
+                                printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O GRUPO D.: ");
+                                setbuf(stdin,NULL);
+                                fgets(nomeP,49,stdin);
+                                strupr(nomeP);
+
+                                ARQ *buscaP = grup->inicio;
+                                while(buscaP!=NULL){
+                                    if(strcmp(nomeP,buscaP->dados.tema)==0){
+
+                                        strcpy(aux3->dados.congre,nomeC);
+                                        aux3->dados.numgp = aux3->dados.numgp+1;
+                                        strcpy(aux3->dados.grupoD[aux3->dados.numgp-1],nomeP);
+                                        system("cls");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        printf("\n\t\t\t\t\t\t\t\t INSCRICAO EFETUADA!");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        on = 0;
+                                    }
+                                    buscaP = buscaP->prox;
+                                }
+                            }
+                        }
+                            return 0;
+
+                        break;
+
+                    default:
+
+                        if(ofic->inicio==NULL){
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t NAO HA OFICINAS!");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                            return 0;
+                        }
+                        else{
+
+                            int on = 1;
+                            while(on){
+
+                                system("cls");
+                                printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                                printf("\n\t\t\t\t\t\t\t\t LISTA DE OFICINAS\n");
+                                ARQ *ofi = ofic->inicio;
+                                while(ofi!=NULL){
+                                    printf("\n\t\t\t\t\t\t\t\t - %s",ofi->dados.tema);
+                                    ofi = ofi->prox;
+                                }
+                                printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA A OFICINA: ");
+                                setbuf(stdin,NULL);
+                                fgets(nomeP,49,stdin);
+                                strupr(nomeP);
+
+                                ARQ *buscaP = ofic->inicio;
+                                while(buscaP!=NULL){
+                                    if(strcmp(nomeP,buscaP->dados.tema)==0){
+
+                                        strcpy(aux3->dados.congre,nomeC);
+                                        strcpy(aux3->dados.oficina,nomeP);
+                                        aux3->dados.numOf = 1;
+                                        system("cls");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        printf("\n\t\t\t\t\t\t\t\t INSCRICAO EFETUADA!");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        on = 0;
+                                    }
+                                    buscaP = buscaP->prox;
+                                }
+                            }
+                        }
+
+                            return 0;
+
+                        break;
+                    }
+
+                    }
+                    aux3 = aux3->prox;
+                }
+                //Caso Seja uma nova inscricao
+                system("cls");
+                printf("\n\t\t\t\t\t\t\t\t------------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\tOPCOES DE EVENTOS: \n");
+                printf("\n\t\t\t\t\t\t\t\t 1 - PALESTRA");
+                printf("\n\t\t\t\t\t\t\t\t 2 - CURSO");
+                printf("\n\t\t\t\t\t\t\t\t 3 - G. DISCUSSAO");
+                printf("\n\t\t\t\t\t\t\t\t 4 - OFICINA");
+                printf("\n\t\t\t\t\t\t\t\t >> ");
+                scanf("%d",&opcao);
+
+                while(opcao<1 || opcao>4){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t------------------------------------\n");
+                    printf("\n\t\t\t\t\t\t\t\tOPCOES DE EVENTOS: \n");
+                    printf("\n\t\t\t\t\t\t\t\t 1 - PALESTRA");
+                    printf("\n\t\t\t\t\t\t\t\t 2 - CURSO");
+                    printf("\n\t\t\t\t\t\t\t\t 3 - G. DISCUSSAO");
+                    printf("\n\t\t\t\t\t\t\t\t 4 - OFICINA");
+                    printf("\n\t\t\t\t\t\t\t\t >> ");
+                    scanf("%d",&opcao);
+                }
+
+                switch(opcao){
+                case 1:
+                    if(pale->inicio==NULL){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t NAO HA PALESTRAS!");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                        return 0;
+                    }
+                    else{
+
+                        int on = 1;
+                        while(on){
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t LISTA DE PALESTRAS\n");
+                            ARQ *palestras = pale->inicio;
+                            while(palestras!=NULL){
+                                printf("\n\t\t\t\t\t\t\t\t - %s",palestras->dados.tema);
+                                palestras = palestras->prox;
+                            }
+                            printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA A PALESTRA: ");
+                            setbuf(stdin,NULL);
+                            fgets(nomeP,49,stdin);
+                            strupr(nomeP);
+
+                             ARQ *buscaP = pale->inicio;
+                             while(buscaP!=NULL){
+                                if(strcmp(nomeP,buscaP->dados.tema)==0){
+                                    strcpy(i->congre,nomeC);
+                                    i->numpa = 1;
+                                    i->numgp = 0;
+                                    i->numOf = 0;
+                                    i->numCr = 0;
+                                    strcpy(i->pales[i->numpa-1],nomeP);
+                                    on = 0;
+                                }
+                                buscaP = buscaP->prox;
+                             }
+
+                        }
+                        return 1;
+
+                    }
+                    break;
+                case 2:
+
+                    if(curso->inicio==NULL){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t NAO HA CURSOS!");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                        return 0;
+                    }
+                    else{
+
+                        int on = 1;
+                        while(on){
+
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t LISTA DE CURSOS\n");
+                            ARQ *cur = curso->inicio;
+                            while(cur!=NULL){
+                                printf("\n\t\t\t\t\t\t\t\t - %s",cur->dados.tema);
+                                cur = cur->prox;
+                            }
+                            printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O CURSO: ");
+                            setbuf(stdin,NULL);
+                            fgets(nomeP,49,stdin);
+                            strupr(nomeP);
+
+                             ARQ *buscaP = curso->inicio;
+                             while(buscaP!=NULL){
+                                if(strcmp(nomeP,buscaP->dados.tema)==0){
+                                    strcpy(i->congre,nomeC);
+                                    strcpy(i->curso,nomeP);
+                                    i->numpa = 0;
+                                    i->numgp = 0;
+                                    i->numOf = 0;
+                                    i->numCr = 1;
+                                    on = 0;
+                                }
+                                buscaP = buscaP->prox;
+                             }
+
+
+                        }
+                    }
+
+                        return 1;
+
+                    break;
+                case 3:
+
+                    if(grup->inicio==NULL){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t NAO HA GRUPOS D.!");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                        return 0;
+                    }
+                    else{
+
+                        int on = 1;
+                        while(on){
+
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t LISTA DE GRUPOS D.\n");
+                            ARQ *gr = grup->inicio;
+                            while(gr!=NULL){
+                                printf("\n\t\t\t\t\t\t\t\t - %s",gr->dados.tema);
+                                gr = gr->prox;
+                            }
+                            printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA O GRUPO D.: ");
+                            setbuf(stdin,NULL);
+                            fgets(nomeP,49,stdin);
+                            strupr(nomeP);
+
+                            ARQ *buscaP = grup->inicio;
+                            while(buscaP!=NULL){
+                                if(strcmp(nomeP,buscaP->dados.tema)==0){
+                                    strcpy(i->congre,nomeC);
+                                    i->numgp = 1;
+                                    i->numpa = 0;
+                                    i->numOf = 0;
+                                    i->numCr = 0;
+                                    strcpy(i->grupoD[i->numgp-1],nomeP);
+                                    on = 0;
+                                }
+                                buscaP = buscaP->prox;
+                             }
+                        }
+                    }
+                        return 1;
+
+                    break;
+
+                default:
+
+                    if(ofic->inicio==NULL){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t NAO HA OFICINAS!");
+                        printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+                        return 0;
+                    }
+                    else{
+
+                        int on = 1;
+                        while(on){
+
+                            system("cls");
+                            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+                            printf("\n\t\t\t\t\t\t\t\t LISTA DE OFICINAS\n");
+                            ARQ *ofi = ofic->inicio;
+                            while(ofi!=NULL){
+                                printf("\n\t\t\t\t\t\t\t\t - %s",ofi->dados.tema);
+                                ofi = ofi->prox;
+                            }
+                            printf("\n\n\t\t\t\t\t\t\t\t ESCOLHA A OFICINA: ");
+                            setbuf(stdin,NULL);
+                            fgets(nomeP,49,stdin);
+                            strupr(nomeP);
+
+                            ARQ *buscaP = ofic->inicio;
+                            while(buscaP!=NULL){
+                                if(strcmp(nomeP,buscaP->dados.tema)==0){
+                                    strcpy(i->congre,nomeC);
+                                    strcpy(i->oficina,nomeP);
+                                    i->numpa = 0;
+                                    i->numgp = 0;
+                                    i->numOf = 1;
+                                    i->numCr = 0;
+                                    on = 0;
+                                }
+                                buscaP = buscaP->prox;
+                             }
+                        }
+                    }
+
+                        return 1;
+
+                    break;
+                }
+
+
+
+            }
+        }
+        else{
+            system("cls");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------------");
+            printf("\n\t\t\t\t\t\t\t\t NAO HA CONGRESSISTAS CADASTRADOS");
+            printf("\n\t\t\t\t\t\t\t\t---------------------------------\n\n");
+            return 0;
+        }
+    }
+
+}
+
+void mostrarIns(LISTAI *li){
+    int i;
+    if(li == NULL){
+    }
+    else{
+        if(li->inicio==NULL){
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t SEM INSCRICOES!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+        }
+        else{
+            INS* aux = li->inicio;
+            printf("\n\n\t\t\t\t\t\t\t\tLISTA INSCRICOES: \n");
+            while(aux != NULL){
+                printf("\n\n\t\t\t\t\t\t\t\t-----------------------------------\n");
+                printf("\n\t\t\t\t\t\t\t\t CONGRESSISTA: %s\n",aux->dados.congre);
+                if(aux->dados.numCr>0){
+                printf("\n\t\t\t\t\t\t\t\t CURSO: %s\n",aux->dados.curso);
+                }
+                if(aux->dados.numOf>0){
+                printf("\n\t\t\t\t\t\t\t\t OFICINA: %s\n",aux->dados.oficina);
+                }
+                if(aux->dados.numpa>0){
+                    printf("\n\t\t\t\t\t\t\t\t PALESTRAS:\n");
+                    for(i=0;i<aux->dados.numpa;i++){
+                    printf("\n\t\t\t\t\t\t\t\t - %s\n",aux->dados.pales[i]);
+                    }
+                }
+
+                if(aux->dados.numgp>0){
+                    printf("\n\t\t\t\t\t\t\t\t GRUPOS D.:\n");
+                    for(i=0;i<aux->dados.numgp;i++){
+                        printf("\n\t\t\t\t\t\t\t\t - %s\n",aux->dados.grupoD[i]);
+                    }
+                }
+                printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
+                aux = aux->prox;
+            }
+        }
+    }
+}
+void liberarIns(LISTAI *li){//Liberar a memoria da lista
+    if(li !=NULL){
+        INS * aux;
+        while(li->inicio!=NULL)
+        {
+            aux = li->inicio;
+            li->inicio = li->inicio->prox;
+            free(aux);
+        }
+        free(li);
+        printf("\nLista liberada\n");
+    }
+}
 
 int main(){
     LISTAD *congressista = criar() , *palestrantes = criar() , *organizadores = criar();
     LISTAE *palestra = criarEventos() , *grupoD = criarEventos() , *curso = criarEventos() , *oficina = criarEventos();
+    LISTAI *inscricao = criarI();
 
     CADASTRO dados;
     EVENTO dadosE;
+    INSCRICAO dadosI;
 
     int padraoMatricula = 10001;
-    int opGeral, opCongressista , opPalestrante , opOrganizadores , opEventos;
-    int onGeral = 1 , onCongre = 1 , onPales = 1 , onOrg = 1 , onEven = 1;
+    int opGeral, opCongressista , opPalestrante , opOrganizadores , opEventos, opInscricao;
+    int onGeral = 1 , onCongre = 1 , onPales = 1 , onOrg = 1 , onEven = 1 , onIns = 1;
 
     int onEPale = 1 , onEGru = 1 , onECur = 1 , onOfi = 1;
     int opEPalestra ,opEGrupo , opECurso, opEOficina;
@@ -3705,7 +4568,7 @@ int main(){
 
     while(onGeral){
       scanf("%d",&opGeral);
-      while(opGeral<1 || opGeral>5){
+      while(opGeral<1 || opGeral>6){
         system("cls");
         menu_incial();
         scanf("%d",&opGeral);
@@ -4255,6 +5118,67 @@ int main(){
 
             break;
 
+        case 5:
+
+            system("cls");
+            menu_inscricoes();
+
+            while(onIns){
+                scanf("%d",&opInscricao);
+
+                while(opInscricao<1 || opInscricao>5){
+                system("cls");
+                menu_inscricoes();
+                scanf("%d",&opInscricao);
+                }
+
+                switch(opInscricao){
+
+                    case 1:
+                        system("cls");
+                        int auxIns;
+                        auxIns = cadastroIns(inscricao,&dadosI,congressista,palestra,curso,oficina,grupoD);
+                        if(auxIns!=0){
+                            inserirIns(inscricao,dadosI);
+                        }
+                        system("pause");
+                        system("cls");
+                        menu_inscricoes();
+                        break;
+
+
+                    case 2:
+                        system("cls");
+                        mostrarIns(inscricao);
+                        system("pause");
+                        system("cls");
+                        menu_inscricoes();
+
+                        break;
+
+
+                    case 3:
+                                
+
+                        break;
+
+
+                    case 4:
+
+
+                        break;
+
+
+                    default:
+                        system("cls");
+                        menu_incial();
+                        onIns = 0;
+                        break;
+
+                }
+            }
+            onIns = 1;
+            break;
 
         default:
             system("cls");
@@ -4269,4 +5193,5 @@ int main(){
     liberarEventos(curso);
     liberarEventos(oficina);
     liberarEventos(grupoD);
+    liberarIns(inscricao);
 }
