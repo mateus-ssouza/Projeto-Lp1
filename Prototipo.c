@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
-
+#define CCONGRE 2
 typedef struct{
     char nome[20];
     char curso[40];
@@ -256,14 +256,14 @@ void menu_inscricoes(){
     printf("\t\t\t\t\t\t\t\t|                                           |\n");
     printf("\t\t\t\t\t\t\t\t|    1 - Inscrever                          |\n");
     printf("\t\t\t\t\t\t\t\t|    2 - Listar                             |\n");
-    printf("\t\t\t\t\t\t\t\t|    3 - Editar                             |\n");
-    printf("\t\t\t\t\t\t\t\t|    4 - Cancelar                           |\n");
-    printf("\t\t\t\t\t\t\t\t|    5 - Sair                               |\n");
+    printf("\t\t\t\t\t\t\t\t|    3 - Cancelar                           |\n");
+    printf("\t\t\t\t\t\t\t\t|    4 - Sair                               |\n");
     printf("\t\t\t\t\t\t\t\t|                                           |\n");
     printf("\t\t\t\t\t\t\t\t|                                           |\n");
     printf("\t\t\t\t\t\t\t\t*-------------------------------------------*\n");
     printf("\t\t\t\t\t\t\t\t-->> ");
 }
+
 
 void mostrarCongressista(LISTAD *ld){  //Funcao de listagem dos congressistas cadastrados
 
@@ -755,6 +755,60 @@ void remover(LISTAD *ld){ //Funcao para remover dados na lista
             printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
             printf("\n\t\t\t\t\t\t\t\t USUARIO REMOVIDO!");
             printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+        }
+    }
+
+}
+
+int removerCongressista(LISTAD *ld){ //Funcao para remover dados na lista
+    char nomeBusca[20];
+    if(ld==NULL){
+    }
+    else{
+        if(ld->inicio == NULL){
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t SEM USUARIOS CADASTRADOS!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            return 0;
+        }
+        else{
+            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+            printf("\n\n\t\t\t\t\t\t\t\tDIGITE O USUARIO QUE DESEJA REMOVER: \n\n");
+            printf("\n\n\t\t\t\t\t\t\t\tNOME DO USUARIO: ");
+            setbuf(stdin,NULL);
+            fgets(nomeBusca,19,stdin);
+            strupr(nomeBusca);
+
+            ELEM *aux = ld->inicio;
+            if(strcmp(nomeBusca,aux->dados.nome)== 0){//Se estiver no inicio da lista
+                ld->inicio=aux->prox;
+                if(aux->prox!=NULL)
+                    aux->prox->ant=NULL;
+                free(aux);
+            }
+            else{//Se estiver no meio ou no fim
+                ELEM *ant;
+                while((aux!=NULL) && strcmp(nomeBusca,aux->dados.nome)!=0){
+                    ant=aux;
+                    aux=aux->prox;
+                }
+                if(aux==NULL){ //Caso o nome digitado nao esteja na lista
+                    system("cls");
+                    printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                    printf("\n\t\t\t\t\t\t\t\t USUARIO NAO ENCONTRADO!");
+                    printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                    return 0;
+                }
+                ant->prox = aux->prox;
+                if(aux->prox!=NULL)             //Remorcao do dado.
+                    aux->prox->ant=ant;
+                free(aux);
+            }
+            system("cls");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t USUARIO REMOVIDO!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            return 1;
         }
     }
 
@@ -1488,13 +1542,6 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
                     return 0;
                 }
 
-                system("cls");
-                printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
-                printf("\n\t\t\t\t\t\t\t\t CADASTRO DO EVENTO: \n\n");
-                printf("\t\t\t\t\t\t\t\t DIGITE O TEMA: ");
-                setbuf(stdin,NULL);
-                fgets(e->tema,49,stdin);
-                strupr(e->tema);
                 system("cls");
                 printf("\n\t\t\t\t\t\t\t\t---------------------------\n");
                 printf("\t\t\t\t\t\t\t\t ESCOLHA O LOCAL DO EVENTO: \n");
@@ -3895,8 +3942,8 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                             fgets(nomeP,49,stdin);
                             strupr(nomeP);
 
-                             ARQ *buscaP = curso->inicio;
-                             while(buscaP!=NULL){
+                            ARQ *buscaP = curso->inicio;
+                            while(buscaP!=NULL){
                                 if(strcmp(nomeP,buscaP->dados.tema)==0){
                                     strcpy(i->congre,nomeC);
                                     strcpy(i->curso,nomeP);
@@ -4093,6 +4140,18 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                 fgets(nomeP,49,stdin);
                                 strupr(nomeP);
 
+                                INSCRICAO verificar = li->inicio->dados;
+                                int i;
+                                for(i=0;i<verificar.numpa;i++){
+                                    if(strcmp(nomeP,verificar.pales[i])==0){
+                                        system("cls");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        printf("\n\t\t\t\t\t\t\t\t PALESTRA JA INSCRITA!");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        return 0;
+                                    }
+                                }
+
                                 ARQ *buscaP = pale->inicio;
                                 while(buscaP!=NULL){
                                     if(strcmp(nomeP,buscaP->dados.tema)==0){
@@ -4140,6 +4199,15 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                 setbuf(stdin,NULL);
                                 fgets(nomeP,49,stdin);
                                 strupr(nomeP);
+
+
+                                if(aux3->dados.numCr!=0){
+                                    system("cls");
+                                    printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                    printf("\n\t\t\t\t\t\t\t\t JA ESTA INSCRITO EM UM CURSO!");
+                                    printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                    return 0;
+                                }
 
                                 ARQ *buscaP = curso->inicio;
                                 while(buscaP!=NULL){
@@ -4191,6 +4259,18 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                 fgets(nomeP,49,stdin);
                                 strupr(nomeP);
 
+                                INSCRICAO verificar = li->inicio->dados;
+                                int i;
+                                for(i=0;i<verificar.numgp;i++){
+                                    if(strcmp(nomeP,verificar.grupoD[i])==0){
+                                        system("cls");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        printf("\n\t\t\t\t\t\t\t\t GRUPO JA INSCRITO!");
+                                        printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                                        return 0;
+                                    }
+                                }
+
                                 ARQ *buscaP = grup->inicio;
                                 while(buscaP!=NULL){
                                     if(strcmp(nomeP,buscaP->dados.tema)==0){
@@ -4238,6 +4318,14 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                 setbuf(stdin,NULL);
                                 fgets(nomeP,49,stdin);
                                 strupr(nomeP);
+
+                                if(aux3->dados.numOf!=0){
+                                    system("cls");
+                                    printf("\n\n\t\t\t\t\t\t\t\t----------------------------------\n");
+                                    printf("\n\t\t\t\t\t\t\t\t JA ESTA INSCRITO EM UMA OFICINA!");
+                                    printf("\n\n\t\t\t\t\t\t\t\t----------------------------------\n");
+                                    return 0;
+                                }
 
                                 ARQ *buscaP = ofic->inicio;
                                 while(buscaP!=NULL){
@@ -4531,6 +4619,67 @@ void mostrarIns(LISTAI *li){
         }
     }
 }
+
+void cancelarP(LISTAI *li){
+    char nomeE[20];
+    int achei = 0 , i;
+
+    if(li==NULL){
+    }
+    else{
+        if(li->inicio == NULL){
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t SEM USUARIOS INSCRITOS!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+        }
+        else{
+            printf("\n\n\t\t\t\t\t\t\t\t--------------------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t LISTA DE INSCRITOS \n");
+            INS *lista = li->inicio;
+            while(lista!=NULL){
+                printf("\n\t\t\t\t\t\t\t\t - %s ",lista->dados.congre);
+                lista = lista->prox;
+            }
+            printf("\n\t\t\t\t\t\t\t\t--------------------------------------------");
+            printf("\n\t\t\t\t\t\t\t\t DIGITE O USUARIO QUE DESEJA REMOVER: \n");
+            printf("\n\t\t\t\t\t\t\t\t NOME DO USUARIO: ");
+            setbuf(stdin,NULL);
+            fgets(nomeE,19,stdin);
+            strupr(nomeE);
+
+            INS *aux = li->inicio;
+            if(strcmp(nomeE,aux->dados.congre)== 0){//Se estiver no inicio da lista
+                li->inicio=aux->prox;
+                if(aux->prox!=NULL)
+                    aux->prox->ant=NULL;
+                free(aux);
+            }
+            else{//Se estiver no meio ou no fim
+                INS *ant;
+                while((aux!=NULL) && strcmp(nomeE,aux->dados.congre)!=0){
+                    ant=aux;
+                    aux=aux->prox;
+                }
+                if(aux==NULL){ //Caso o nome digitado nao esteja na lista
+                    system("cls");
+                    printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                    printf("\n\t\t\t\t\t\t\t\t USUARIO NAO ENCONTRADO!");
+                    printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+                    return;
+                }
+                ant->prox = aux->prox;
+                if(aux->prox!=NULL)             //Remorcao do dado.
+                    aux->prox->ant=ant;
+                free(aux);
+            }
+            system("cls");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+            printf("\n\t\t\t\t\t\t\t\t INSCRICAO REMOVIDA!");
+            printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
+        }
+    }
+}
+
 void liberarIns(LISTAI *li){//Liberar a memoria da lista
     if(li !=NULL){
         INS * aux;
@@ -4560,6 +4709,8 @@ int main(){
 
     int onEPale = 1 , onEGru = 1 , onECur = 1 , onOfi = 1;
     int opEPalestra ,opEGrupo , opECurso, opEOficina;
+
+    int totalCongressista = 0;
 
     system("color 17");
     //menu_principal();
@@ -4593,12 +4744,21 @@ int main(){
 
                     case 1:
                         system("cls");
-                        int auxCadastro;
-                        auxCadastro = cadastroCongressista(congressista , &dados  , padraoMatricula);
-                        if(auxCadastro==1){
-                          inserir(congressista,dados);
-                          padraoMatricula++;
+                        if(totalCongressista<CCONGRE){
+                            int auxCadastro;
+                            auxCadastro = cadastroCongressista(congressista , &dados  , padraoMatricula);
+                            if(auxCadastro==1){
+                                inserir(congressista,dados);
+                                padraoMatricula++;
+                                totalCongressista++;
+                            }
                         }
+                        else{
+                                system("cls");
+                                printf("\n\t\t\t\t\t\t\t\t---------------------------");
+                                printf("\n\t\t\t\t\t\t\t\t NAO HA MAIS VAGAS!");
+                                printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                            }
                         system("pause");
                         system("cls");
                         menu_congressista();
@@ -4628,7 +4788,11 @@ int main(){
                     case 4:
 
                         system("cls");
-                        remover(congressista);
+                        int auxRemover;
+                        auxRemover = removerCongressista(congressista);
+                        if(auxRemover==1){
+                            totalCongressista--;
+                        }
                         system("pause");
                         system("cls");
                         menu_congressista();
@@ -5126,7 +5290,7 @@ int main(){
             while(onIns){
                 scanf("%d",&opInscricao);
 
-                while(opInscricao<1 || opInscricao>5){
+                while(opInscricao<1 || opInscricao>4){
                 system("cls");
                 menu_inscricoes();
                 scanf("%d",&opInscricao);
@@ -5156,18 +5320,13 @@ int main(){
 
                         break;
 
-
                     case 3:
-                                
-
+                        system("cls");
+                        cancelarP(inscricao);
+                        system("pause");
+                        system("cls");
+                        menu_inscricoes();
                         break;
-
-
-                    case 4:
-
-
-                        break;
-
 
                     default:
                         system("cls");
