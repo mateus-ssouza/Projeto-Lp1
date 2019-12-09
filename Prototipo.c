@@ -3,6 +3,7 @@
 #include <string.h>
 #include <windows.h>
 #define CCONGRE 2
+
 typedef struct{
     char nome[20];
     char curso[40];
@@ -51,8 +52,8 @@ typedef struct{
 
 typedef struct{
     char congre[20];
-    char pales[10][50];
-    char grupoD[10][50];
+    char pales[50][50];
+    char grupoD[50][50];
     char curso[20];
     char oficina[20];
     int numpa,numgp,numCr,numOf;
@@ -1207,7 +1208,7 @@ int cadastroEvento(LISTAE *le , EVENTO *e, LISTAD *ld){
             printf("\n\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
             setbuf(stdin,NULL);
             scanf("%d %d",&e->horario.hora,&e->horario.minuto);
-            while(e->horario.hora<8 || e->horario.hora > 12 || e->horario.minuto < 0 || e->horario.minuto > 59){
+            while(e->horario.hora<8 || e->horario.hora > 11 || e->horario.minuto < 0 || e->horario.minuto > 30){
                 system("cls");
                 printf("\n\t\t\t\t\t\t\t\t---------------------------");
                 printf("\n\t\t\t\t\t\t\t\t Horario invalido!");
@@ -1218,6 +1219,18 @@ int cadastroEvento(LISTAE *le , EVENTO *e, LISTAD *ld){
                 printf("\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
                 setbuf(stdin,NULL);
                 scanf("%d %d",&e->horario.hora,&e->horario.minuto);
+            }
+
+            ARQ *verificarHL = le->inicio;
+            while(verificarHL!=NULL){
+                if(strcmp(e->local,verificarHL->dados.local)==0 && verificarHL->dados.horario.hora == e->horario.hora && verificarHL->dados.horario.minuto == e->horario.minuto){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                    printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                    printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                    return 0;
+                }
+                verificarHL = verificarHL->prox;
             }
 
             system("cls");
@@ -1240,15 +1253,17 @@ int cadastroEvento(LISTAE *le , EVENTO *e, LISTAD *ld){
             while(aux2!=NULL){
                 if(strcmp(nome,aux2->dados.nome)==0){
                     strcpy(e->palestrante,nome);
+                    e->quantMembros = 0;
                     return 1;
                 }
                 aux2 = aux2->prox;
             }
 
-            system("cls");
+                system("cls");
                 printf("\n\t\t\t\t\t\t\t\t---------------------------");
                 printf("\n\t\t\t\t\t\t\t\t NOME NAO ESTA NA LISTA!");
                 printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                return 0;
             }
 
             else{
@@ -1338,7 +1353,7 @@ int cadastroEvento(LISTAE *le , EVENTO *e, LISTAD *ld){
             printf("\n\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
             setbuf(stdin,NULL);
             scanf("%d %d",&e->horario.hora,&e->horario.minuto);
-            while(e->horario.hora<8 || e->horario.hora > 12 || e->horario.minuto < 0 || e->horario.minuto > 59){
+            while(e->horario.hora<8 || e->horario.hora > 11 || e->horario.minuto < 0 || e->horario.minuto > 30){
                 system("cls");
                 printf("\n\t\t\t\t\t\t\t\t---------------------------");
                 printf("\n\t\t\t\t\t\t\t\t Horario invalido!");
@@ -1350,6 +1365,19 @@ int cadastroEvento(LISTAE *le , EVENTO *e, LISTAD *ld){
                 setbuf(stdin,NULL);
                 scanf("%d %d",&e->horario.hora,&e->horario.minuto);
             }
+
+            ARQ *verificarHL = le->inicio;
+            while(verificarHL!=NULL){
+                if(strcmp(e->local,verificarHL->dados.local)==0 && verificarHL->dados.horario.hora == e->horario.hora && verificarHL->dados.horario.minuto == e->horario.minuto){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                    printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                    printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                    return 0;
+                }
+                verificarHL = verificarHL->prox;
+            }
+
 
             system("cls");
             printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
@@ -1371,6 +1399,7 @@ int cadastroEvento(LISTAE *le , EVENTO *e, LISTAD *ld){
             while(aux2!=NULL){
                 if(strcmp(nome,aux2->dados.nome)==0){
                     strcpy(e->palestrante,nome);
+                    e->quantMembros = 0;
                     return 1;
                 }
                 aux2 = aux2->prox;
@@ -1381,6 +1410,7 @@ int cadastroEvento(LISTAE *le , EVENTO *e, LISTAD *ld){
                 printf("\n\t\t\t\t\t\t\t\t NOME NAO ESTA NA LISTA!");
                 printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
             }
+            return 0;
 
         }
         else{
@@ -1393,7 +1423,7 @@ int cadastroEvento(LISTAE *le , EVENTO *e, LISTAD *ld){
     }
 }
 
-int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
+int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld, LISTAE *outro1 , LISTAE *outro2){
     char locais[8][30] = {"AUD 1","AUD 2","AUD 3","SALA 1","SALA 2","SALA 3","LAB 1","LAB 2"};
     int opcaoLocal, i = 1 , busca = 0;
     char nome[20];
@@ -1474,7 +1504,7 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
                 printf("\n\t\t\t\t\t\t\t\t HORARIO DO EVENTO: ");
                 setbuf(stdin,NULL);
                 scanf("%d %d",&e->horario.hora,&e->horario.minuto);
-                while(e->horario.hora<11 || e->horario.hora > 17 || e->horario.minuto < 0 || e->horario.minuto > 59){
+                while(e->horario.hora<13 || e->horario.hora > 17 || e->horario.minuto < 0 || e->horario.minuto > 30){
                     system("cls");
                     printf("\n\t\t\t\t\t\t\t\t---------------------------");
                     printf("\n\t\t\t\t\t\t\t\t Horario invalido!");
@@ -1486,6 +1516,43 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
                     setbuf(stdin,NULL);
                     scanf("%d %d",&e->horario.hora,&e->horario.minuto);
                 }
+
+                ARQ *verificarHL = le->inicio;
+                while(verificarHL!=NULL){
+                    if(strcmp(e->local,verificarHL->dados.local)==0 && verificarHL->dados.horario.hora == e->horario.hora && verificarHL->dados.horario.minuto == e->horario.minuto){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                        return 0;
+                    }
+                    verificarHL = verificarHL->prox;
+                }
+
+                ARQ *outroHL1 = outro1->inicio;
+                while(outroHL1!=NULL){
+                    if(strcmp(e->local,outroHL1->dados.local)==0 && outroHL1->dados.horario.hora == e->horario.hora && outroHL1->dados.horario.minuto == e->horario.minuto){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                        return 0;
+                    }
+                    outroHL1 = outroHL1->prox;
+                }
+
+                ARQ *outroHL2 = outro2->inicio;
+                while(outroHL2!=NULL){
+                    if(strcmp(e->local,outroHL2->dados.local)==0 && outroHL2->dados.horario.hora == e->horario.hora && outroHL2->dados.horario.minuto == e->horario.minuto){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                        return 0;
+                    }
+                    outroHL2 = outroHL2->prox;
+                }
+
 
                 system("cls");
                 printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
@@ -1507,6 +1574,7 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
                 while(aux2!=NULL){
                     if(strcmp(nome,aux2->dados.nome)==0){
                         strcpy(e->palestrante,nome);
+                        e->quantMembros = 0;
                         return 1;
                     }
                     aux2 = aux2->prox;
@@ -1516,6 +1584,7 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
                 printf("\n\t\t\t\t\t\t\t\t---------------------------");
                 printf("\n\t\t\t\t\t\t\t\t NOME NAO ESTA NA LISTA!");
                 printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                return 0;
             }
             else{
 
@@ -1617,6 +1686,42 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
                     scanf("%d %d",&e->horario.hora,&e->horario.minuto);
                 }
 
+                ARQ *verificarHL = le->inicio;
+                while(verificarHL!=NULL){
+                    if(strcmp(e->local,verificarHL->dados.local)==0 && verificarHL->dados.horario.hora == e->horario.hora && verificarHL->dados.horario.minuto == e->horario.minuto){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                        return 0;
+                    }
+                    verificarHL = verificarHL->prox;
+                }
+
+                ARQ *outroHL1 = outro1->inicio;
+                while(outroHL1!=NULL){
+                    if(strcmp(e->local,outroHL1->dados.local)==0 && outroHL1->dados.horario.hora == e->horario.hora && outroHL1->dados.horario.minuto == e->horario.minuto){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                        return 0;
+                    }
+                    outroHL1 = outroHL1->prox;
+                }
+
+                ARQ *outroHL2 = outro2->inicio;
+                while(outroHL2!=NULL){
+                    if(strcmp(e->local,outroHL2->dados.local)==0 && outroHL2->dados.horario.hora == e->horario.hora && outroHL2->dados.horario.minuto == e->horario.minuto){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                        return 0;
+                    }
+                    outroHL2 = outroHL2->prox;
+                }
+
                 system("cls");
                 printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
                 printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
@@ -1637,6 +1742,7 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
                 while(aux2!=NULL){
                     if(strcmp(nome,aux2->dados.nome)==0){
                         strcpy(e->palestrante,nome);
+                        e->quantMembros = 0;
                         return 1;
                     }
                     aux2 = aux2->prox;
@@ -1646,6 +1752,7 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
                 printf("\n\t\t\t\t\t\t\t\t---------------------------");
                 printf("\n\t\t\t\t\t\t\t\t NOME NAO ESTA NA LISTA!");
                 printf("\n\t\t\t\t\t\t\t\t---------------------------\n\n");
+                return 0;
 
             }
         }
@@ -1659,7 +1766,7 @@ int cadastroEventoT(LISTAE *le , EVENTO *e, LISTAD *ld){
     }
 }
 
-int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
+int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld, LISTAE *outro1 , LISTAE *outro2){
     char locais[8][30] = {"AUD 1","AUD 2","AUD 3","SALA 1","SALA 2","SALA 3","LAB 1","LAB 2"};
     int opcaoLocal, i = 1, busca = 0, quantMembros = 0, numMembros;
     char membro[20];
@@ -1758,6 +1865,42 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                 scanf("%d %d",&e->horario.hora,&e->horario.minuto);
             }
 
+            ARQ *verificarHL = le->inicio;
+            while(verificarHL!=NULL){
+                if(strcmp(e->local,verificarHL->dados.local)==0 && verificarHL->dados.horario.hora == e->horario.hora && verificarHL->dados.horario.minuto == e->horario.minuto){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                    printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                    printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                    return 0;
+                }
+                verificarHL = verificarHL->prox;
+            }
+
+            ARQ *outroHL1 = outro1->inicio;
+                while(outroHL1!=NULL){
+                    if(strcmp(e->local,outroHL1->dados.local)==0 && outroHL1->dados.horario.hora == e->horario.hora && outroHL1->dados.horario.minuto == e->horario.minuto){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                        return 0;
+                    }
+                    outroHL1 = outroHL1->prox;
+                }
+
+                ARQ *outroHL2 = outro2->inicio;
+                while(outroHL2!=NULL){
+                    if(strcmp(e->local,outroHL2->dados.local)==0 && outroHL2->dados.horario.hora == e->horario.hora && outroHL2->dados.horario.minuto == e->horario.minuto){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                        return 0;
+                    }
+                    outroHL2 = outroHL2->prox;
+                }
+
             system("cls");
             printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
             printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
@@ -1807,6 +1950,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             strcpy(e->membro3,"NULO");
                             strcpy(e->membro4,"NULO");
                             strcpy(e->membro5,"NULO");
+                            e->quantMembros = 0;
                             return 1;
                         }
                         busca = busca->prox;
@@ -1861,6 +2005,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             strcpy(e->membro3,"NULO");
                             strcpy(e->membro4,"NULO");
                             strcpy(e->membro5,"NULO");
+                            e->quantMembros = 0;
                             return 1;
                         }
                         busca = busca->prox;
@@ -1939,6 +2084,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             strcpy(e->membro3,membro);
                             strcpy(e->membro4,"NULO");
                             strcpy(e->membro5,"NULO");
+                            e->quantMembros = 0;
                             return 1;
                         }
                         busca = busca->prox;
@@ -2042,6 +2188,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0 && strcmp(e->membro3,membro)!=0){
                             strcpy(e->membro4,membro);
                             strcpy(e->membro5,"NULO");
+                            e->quantMembros = 0;
                             return 1;
                         }
                         busca = busca->prox;
@@ -2169,6 +2316,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                     while(busca!=NULL){
                         if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0 && strcmp(e->membro3,membro)!=0 && strcmp(e->membro4,membro)!=0){
                             strcpy(e->membro5,membro);
+                            e->quantMembros = 0;
                             return 1;
                         }
                         busca = busca->prox;
@@ -2298,6 +2446,42 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                 scanf("%d %d",&e->horario.hora,&e->horario.minuto);
             }
 
+            ARQ *verificarHL = le->inicio;
+            while(verificarHL!=NULL){
+                if(strcmp(e->local,verificarHL->dados.local)==0 && verificarHL->dados.horario.hora == e->horario.hora && verificarHL->dados.horario.minuto == e->horario.minuto){
+                    system("cls");
+                    printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                    printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                    printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                    return 0;
+                }
+                verificarHL = verificarHL->prox;
+            }
+
+            ARQ *outroHL1 = outro1->inicio;
+                while(outroHL1!=NULL){
+                    if(strcmp(e->local,outroHL1->dados.local)==0 && outroHL1->dados.horario.hora == e->horario.hora && outroHL1->dados.horario.minuto == e->horario.minuto){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                        return 0;
+                    }
+                    outroHL1 = outroHL1->prox;
+                }
+
+                ARQ *outroHL2 = outro2->inicio;
+                while(outroHL2!=NULL){
+                    if(strcmp(e->local,outroHL2->dados.local)==0 && outroHL2->dados.horario.hora == e->horario.hora && outroHL2->dados.horario.minuto == e->horario.minuto){
+                        system("cls");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------");
+                        printf("\n\t\t\t\t\t\t\t\t Ha eventos nesse horario!");
+                        printf("\n\t\t\t\t\t\t\t\t----------------------------\n\n");
+                        return 0;
+                    }
+                    outroHL2 = outroHL2->prox;
+                }
+
             system("cls");
             printf("\n\t\t\t\t\t\t\t\t-------------------------------------------\n");
             printf("\t\t\t\t\t\t\t\t LISTA DE PALESTRANTES: \n");
@@ -2347,6 +2531,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             strcpy(e->membro3,"NULO");
                             strcpy(e->membro4,"NULO");
                             strcpy(e->membro5,"NULO");
+                            e->quantMembros = 0;
                             return 1;
                         }
                         busca = busca->prox;
@@ -2401,6 +2586,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             strcpy(e->membro3,"NULO");
                             strcpy(e->membro4,"NULO");
                             strcpy(e->membro5,"NULO");
+                            e->quantMembros = 0;
                             return 1;
                         }
                         busca = busca->prox;
@@ -2479,6 +2665,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                             strcpy(e->membro3,membro);
                             strcpy(e->membro4,"NULO");
                             strcpy(e->membro5,"NULO");
+                            e->quantMembros = 0;
                             return 1;
                         }
                         busca = busca->prox;
@@ -2582,6 +2769,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                         if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0 && strcmp(e->membro3,membro)!=0){
                             strcpy(e->membro4,membro);
                             strcpy(e->membro5,"NULO");
+                            e->quantMembros = 0;
                             return 1;
                         }
                         busca = busca->prox;
@@ -2709,6 +2897,7 @@ int cadastroEventoG(LISTAE *le , EVENTO *e, LISTAD *ld){
                     while(busca!=NULL){
                         if(strcmp(busca->dados.nome,membro)==0 && strcmp(e->membro1,membro)!=0 && strcmp(e->membro2,membro)!=0 && strcmp(e->membro3,membro)!=0 && strcmp(e->membro4,membro)!=0){
                             strcpy(e->membro5,membro);
+                            e->quantMembros = 0;
                             return 1;
                         }
                         busca = busca->prox;
@@ -2766,6 +2955,7 @@ void mostrarPalestra(LISTAE *le){  //Funcao de listagem dos congressistas cadast
                 printf("\n\t\t\t\t\t\t\t\t LOCAL: %s\n",aux->dados.local);
                 printf("\n\t\t\t\t\t\t\t\t HORARIO: %d:0%d\n",aux->dados.horario.hora,aux->dados.horario.minuto);
                 printf("\n\t\t\t\t\t\t\t\t CARGA HORARIA: %d HRS\n",aux->dados.cargaH);
+                printf("\n\t\t\t\t\t\t\t\t TOTAL INS.: %d PESSOAS",aux->dados.quantMembros);
                 printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
                 }
                 else{
@@ -2775,6 +2965,7 @@ void mostrarPalestra(LISTAE *le){  //Funcao de listagem dos congressistas cadast
                     printf("\n\t\t\t\t\t\t\t\t LOCAL: %s\n",aux->dados.local);
                     printf("\n\t\t\t\t\t\t\t\t HORARIO: %d:%d\n",aux->dados.horario.hora,aux->dados.horario.minuto);
                     printf("\n\t\t\t\t\t\t\t\t CARGA HORARIA: %d\n",aux->dados.cargaH);
+                    printf("\n\t\t\t\t\t\t\t\t TOTAL INS.: %d PESSOAS",aux->dados.quantMembros);
                     printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
                 }
                 aux = aux->prox;
@@ -2804,6 +2995,7 @@ void mostrarCurso(LISTAE *le){  //Funcao de listagem dos congressistas cadastrad
                 printf("\n\t\t\t\t\t\t\t\t LOCAL: %s\n",aux->dados.local);
                 printf("\n\t\t\t\t\t\t\t\t HORARIO: %d:0%d\n",aux->dados.horario.hora,aux->dados.horario.minuto);
                 printf("\n\t\t\t\t\t\t\t\t CARGA HORARIA: %d HRS\n",aux->dados.cargaH);
+                printf("\n\t\t\t\t\t\t\t\t TOTAL INS.: %d PESSOAS",aux->dados.quantMembros);
                 printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
                 }
                 else{
@@ -2813,6 +3005,7 @@ void mostrarCurso(LISTAE *le){  //Funcao de listagem dos congressistas cadastrad
                     printf("\n\t\t\t\t\t\t\t\t LOCAL: %s\n",aux->dados.local);
                     printf("\n\t\t\t\t\t\t\t\t HORARIO: %d:%d\n",aux->dados.horario.hora,aux->dados.horario.minuto);
                     printf("\n\t\t\t\t\t\t\t\t CARGA HORARIA: %d\n",aux->dados.cargaH);
+                    printf("\n\t\t\t\t\t\t\t\t TOTAL INS.: %d PESSOAS",aux->dados.quantMembros);
                     printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
                 }
                 aux = aux->prox;
@@ -2842,6 +3035,7 @@ void mostrarOficina(LISTAE *le){  //Funcao de listagem dos congressistas cadastr
                 printf("\n\t\t\t\t\t\t\t\t LOCAL: %s\n",aux->dados.local);
                 printf("\n\t\t\t\t\t\t\t\t HORARIO: %d:0%d\n",aux->dados.horario.hora,aux->dados.horario.minuto);
                 printf("\n\t\t\t\t\t\t\t\t CARGA HORARIA: %d HRS\n",aux->dados.cargaH);
+                printf("\n\t\t\t\t\t\t\t\t TOTAL INS.: %d PESSOAS",aux->dados.quantMembros);
                 printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
                 }
                 else{
@@ -2851,6 +3045,7 @@ void mostrarOficina(LISTAE *le){  //Funcao de listagem dos congressistas cadastr
                     printf("\n\t\t\t\t\t\t\t\t LOCAL: %s\n",aux->dados.local);
                     printf("\n\t\t\t\t\t\t\t\t HORARIO: %d:%d\n",aux->dados.horario.hora,aux->dados.horario.minuto);
                     printf("\n\t\t\t\t\t\t\t\t CARGA HORARIA: %d\n",aux->dados.cargaH);
+                    printf("\n\t\t\t\t\t\t\t\t TOTAL INS.: %d PESSOAS",aux->dados.quantMembros);
                     printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
                 }
                 aux = aux->prox;
@@ -2892,6 +3087,7 @@ void mostrarGrupoD(LISTAE *le){  //Funcao de listagem dos congressistas cadastra
                 printf("\n\t\t\t\t\t\t\t\t LOCAL: %s\n",aux->dados.local);
                 printf("\n\t\t\t\t\t\t\t\t HORARIO: %d:0%d\n",aux->dados.horario.hora,aux->dados.horario.minuto);
                 printf("\n\t\t\t\t\t\t\t\t CARGA HORARIA: %d HRS\n",aux->dados.cargaH);
+                printf("\n\t\t\t\t\t\t\t\t TOTAL INS.: %d PESSOAS",aux->dados.quantMembros);
                 printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
                 }
                 else{
@@ -2913,6 +3109,7 @@ void mostrarGrupoD(LISTAE *le){  //Funcao de listagem dos congressistas cadastra
                     printf("\n\t\t\t\t\t\t\t\t LOCAL: %s\n",aux->dados.local);
                     printf("\n\t\t\t\t\t\t\t\t HORARIO: %d:%d\n",aux->dados.horario.hora,aux->dados.horario.minuto);
                     printf("\n\t\t\t\t\t\t\t\t CARGA HORARIA: %d HRS\n",aux->dados.cargaH);
+                    printf("\n\t\t\t\t\t\t\t\t TOTAL INS.: %d PESSOAS",aux->dados.quantMembros);
                     printf("\n\t\t\t\t\t\t\t\t-----------------------------------\n");
                 }
                 aux = aux->prox;
@@ -3905,6 +4102,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                     i->numOf = 0;
                                     i->numCr = 0;
                                     strcpy(i->pales[i->numpa-1],nomeP);
+                                    buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
                                     on = 0;
                                 }
                                 buscaP = buscaP->prox;
@@ -3951,6 +4149,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                     i->numgp = 0;
                                     i->numOf = 0;
                                     i->numCr = 1;
+                                    buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
                                     on = 0;
                                 }
                                 buscaP = buscaP->prox;
@@ -3999,6 +4198,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                     i->numOf = 0;
                                     i->numCr = 0;
                                     strcpy(i->grupoD[i->numgp-1],nomeP);
+                                    buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
                                     on = 0;
                                 }
                                 buscaP = buscaP->prox;
@@ -4045,6 +4245,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                     i->numgp = 0;
                                     i->numOf = 1;
                                     i->numCr = 0;
+                                    buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
                                     on = 0;
                                 }
                                 buscaP = buscaP->prox;
@@ -4159,6 +4360,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                         strcpy(aux3->dados.congre,nomeC);
                                         aux3->dados.numpa = aux3->dados.numpa+1;
                                         strcpy(aux3->dados.pales[aux3->dados.numpa-1],nomeP);
+                                        buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
                                         system("cls");
                                         printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
                                         printf("\n\t\t\t\t\t\t\t\t INSCRICAO EFETUADA!");
@@ -4215,6 +4417,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                         strcpy(aux3->dados.congre,nomeC);
                                         strcpy(aux3->dados.curso,nomeP);
                                         aux3->dados.numCr = 1;
+                                        buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
 
                                         system("cls");
                                         printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
@@ -4278,6 +4481,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                         strcpy(aux3->dados.congre,nomeC);
                                         aux3->dados.numgp = aux3->dados.numgp+1;
                                         strcpy(aux3->dados.grupoD[aux3->dados.numgp-1],nomeP);
+                                        buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
                                         system("cls");
                                         printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
                                         printf("\n\t\t\t\t\t\t\t\t INSCRICAO EFETUADA!");
@@ -4334,6 +4538,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                         strcpy(aux3->dados.congre,nomeC);
                                         strcpy(aux3->dados.oficina,nomeP);
                                         aux3->dados.numOf = 1;
+                                        buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
                                         system("cls");
                                         printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
                                         printf("\n\t\t\t\t\t\t\t\t INSCRICAO EFETUADA!");
@@ -4411,6 +4616,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                     i->numOf = 0;
                                     i->numCr = 0;
                                     strcpy(i->pales[i->numpa-1],nomeP);
+                                    buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
                                     on = 0;
                                 }
                                 buscaP = buscaP->prox;
@@ -4457,6 +4663,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                     i->numgp = 0;
                                     i->numOf = 0;
                                     i->numCr = 1;
+                                    buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
                                     on = 0;
                                 }
                                 buscaP = buscaP->prox;
@@ -4505,6 +4712,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                     i->numOf = 0;
                                     i->numCr = 0;
                                     strcpy(i->grupoD[i->numgp-1],nomeP);
+                                    buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
                                     on = 0;
                                 }
                                 buscaP = buscaP->prox;
@@ -4551,6 +4759,7 @@ int cadastroIns(LISTAI *li, INSCRICAO *i ,LISTAD *congre, LISTAE *pale , LISTAE 
                                     i->numgp = 0;
                                     i->numOf = 1;
                                     i->numCr = 0;
+                                    buscaP->dados.quantMembros = buscaP->dados.quantMembros+1;
                                     on = 0;
                                 }
                                 buscaP = buscaP->prox;
@@ -4620,9 +4829,10 @@ void mostrarIns(LISTAI *li){
     }
 }
 
-void cancelarP(LISTAI *li){
-    char nomeE[20];
-    int achei = 0 , i;
+void cancelarP(LISTAI *li, LISTAE *pale , LISTAE *curso , LISTAE *ofic , LISTAE *grup){
+    char nomeE[20] , eventoP[50][50] , eventoGP[50][50];
+    char nomeO[50], nomeC[50];
+    int achei = 0 , i , j, numPA , numGP;
 
     if(li==NULL){
     }
@@ -4649,6 +4859,17 @@ void cancelarP(LISTAI *li){
 
             INS *aux = li->inicio;
             if(strcmp(nomeE,aux->dados.congre)== 0){//Se estiver no inicio da lista
+                for(i=0;i<aux->dados.numpa;i++){
+                    strcpy(eventoP[i],aux->dados.pales[i]);
+                }
+                for(i=0;i<aux->dados.numgp;i++){
+                    strcpy(eventoGP[i],aux->dados.grupoD[i]);
+                }
+                strcpy(nomeC,aux->dados.curso);
+                strcpy(nomeO,aux->dados.oficina);
+                numPA = aux->dados.numpa;
+                numGP = aux->dados.numgp;
+
                 li->inicio=aux->prox;
                 if(aux->prox!=NULL)
                     aux->prox->ant=NULL;
@@ -4667,11 +4888,60 @@ void cancelarP(LISTAI *li){
                     printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
                     return;
                 }
+
+                for(i=0;i<ant->dados.numpa;i++){
+                    strcpy(eventoP[i],ant->dados.pales[i]);
+                }
+                for(i=0;i<ant->dados.numgp;i++){
+                    strcpy(eventoGP[i],ant->dados.grupoD[i]);
+                }
+                strcpy(nomeC,ant->dados.curso);
+                strcpy(nomeO,ant->dados.oficina);
+                numPA = ant->dados.numpa;
+                numGP = ant->dados.numgp;
+
                 ant->prox = aux->prox;
                 if(aux->prox!=NULL)             //Remorcao do dado.
                     aux->prox->ant=ant;
                 free(aux);
             }
+
+            ARQ *aux1 = curso->inicio;
+            while(aux1!=NULL){
+                if(strcmp(nomeC,aux1->dados.tema)==0){
+                    aux1->dados.quantMembros = aux1->dados.quantMembros-1;
+                }
+                    aux1=aux1->prox;
+            }
+
+            ARQ *aux2 = ofic->inicio;
+            while(aux2!=NULL){
+                if(strcmp(nomeO,aux2->dados.tema)==0){
+                    aux2->dados.quantMembros = aux2->dados.quantMembros-1;
+                }
+                    aux2=aux2->prox;
+            }
+
+            ARQ *aux3 = pale->inicio;
+            while(aux3!=NULL){
+                for(i=0;i<numPA;i++){
+                    if(strcmp(eventoP[i],aux3->dados.tema)==0){
+                        aux3->dados.quantMembros = aux3->dados.quantMembros-1;
+                    }
+                }
+                aux3=aux3->prox;
+            }
+
+            ARQ *aux4 = pale->inicio;
+            while(aux4!=NULL){
+                for(i=0;i<numGP;i++){
+                    if(strcmp(eventoGP[i],aux4->dados.tema)==0){
+                        aux4->dados.quantMembros = aux4->dados.quantMembros-1;
+                    }
+                }
+                aux4=aux4->prox;
+            }
+
             system("cls");
             printf("\n\n\t\t\t\t\t\t\t\t-------------------------------\n");
             printf("\n\t\t\t\t\t\t\t\t INSCRICAO REMOVIDA!");
@@ -5063,7 +5333,7 @@ int main(){
                         case 1:
                             system("cls");
                             int auxCurso;
-                            auxCurso = cadastroEventoT(curso,&dadosE,palestrantes);
+                            auxCurso = cadastroEventoT(curso,&dadosE,palestrantes,oficina,grupoD);
                             if(auxCurso == 1){
                             inserirEvento(curso,dadosE);
                             }
@@ -5139,7 +5409,7 @@ int main(){
 
                             system("cls");
                             int auxCadastroEvento;
-                            auxCadastroEvento = cadastroEventoG(grupoD,&dadosE,palestrantes);
+                            auxCadastroEvento = cadastroEventoG(grupoD,&dadosE,palestrantes,curso,oficina);
                             if(auxCadastroEvento == 1){
                             inserirEvento(grupoD,dadosE);
                             }
@@ -5213,7 +5483,7 @@ int main(){
                         case 1:
                             system("cls");
                             int auxCadastroEvento;
-                            auxCadastroEvento = cadastroEventoT(oficina,&dadosE,palestrantes);
+                            auxCadastroEvento = cadastroEventoT(oficina,&dadosE,palestrantes,curso,grupoD);
                             if(auxCadastroEvento == 1){
                             inserirEvento(oficina,dadosE);
                             }
@@ -5322,7 +5592,7 @@ int main(){
 
                     case 3:
                         system("cls");
-                        cancelarP(inscricao);
+                        cancelarP(inscricao,palestra,curso,oficina,grupoD);
                         system("pause");
                         system("cls");
                         menu_inscricoes();
