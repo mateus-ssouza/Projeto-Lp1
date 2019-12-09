@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
-#define CCONGRE 3
+#define CCONGRE 300
 
+//ESTRUTURAS
 typedef struct{
     char nome[20];
     char curso[40];
@@ -70,6 +71,7 @@ typedef struct{
     struct inscricao *inicio;
 }LISTAI;
 
+//MENUS DO PROGRAMA
 void menu_final(){
     int i;
     system("cls");
@@ -265,7 +267,7 @@ void menu_inscricoes(){
     printf("\t\t\t\t\t\t\t\t-->> ");
 }
 
-
+//FUNCOES
 void mostrarCongressista(LISTAD *ld){  //Funcao de listagem dos congressistas cadastrados
 
     if(ld == NULL){
@@ -4961,6 +4963,8 @@ void liberarIns(LISTAI *li){//Liberar a memoria da lista
     }
 }
 
+
+//FUNCAO PRINCIPAL
 int main(){
     LISTAD *congressista = criar() , *palestrantes = criar() , *organizadores = criar();
     LISTAE *palestra = criarEventos() , *grupoD = criarEventos() , *curso = criarEventos() , *oficina = criarEventos();
