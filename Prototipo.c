@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
-#define CCONGRE 2
+#define CCONGRE 3
 
 typedef struct{
     char nome[20];
@@ -825,7 +825,6 @@ void liberar(LISTAD *ld){//Liberar a memoria da lista
             free(aux);
         }
         free(ld);
-        printf("\nLista liberada\n");
     }
 }
 
@@ -3956,7 +3955,6 @@ void liberarEventos(LISTAE *le){//Liberar a memoria da lista
             free(aux);
         }
         free(le);
-        printf("\nLista liberada\n");
     }
 }
 
@@ -4960,7 +4958,6 @@ void liberarIns(LISTAI *li){//Liberar a memoria da lista
             free(aux);
         }
         free(li);
-        printf("\nLista liberada\n");
     }
 }
 
@@ -4983,7 +4980,7 @@ int main(){
     int totalCongressista = 0;
 
     system("color 17");
-    //menu_principal();
+    menu_principal();
     system("cls");
     menu_incial();
 
@@ -5611,7 +5608,7 @@ int main(){
 
         default:
             system("cls");
-            //menu_final();
+            menu_final();
             onGeral = 0;
       }
     }
