@@ -1,6 +1,6 @@
 # Projeto da disciplina de Laboratório de Programação 1 - UEPB
 
-O projeto tem como objetivo organizar um envento (fictício) da instituição.
+O projeto tem como objetivo organizar um evento (fictício) da instituição.
 
 Características principais:
 
